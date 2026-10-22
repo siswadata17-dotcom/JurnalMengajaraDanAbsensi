@@ -19,6 +19,7 @@
   select, button, input, textarea { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; font-family: inherit; background: #fff; }
   button { cursor: pointer; }
   button:hover { opacity: .88; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
   .btn-blue { background: #2a5298; color: #fff; border-color: #2a5298; }
   .btn-green { background: #10b981; color: #fff; border-color: #10b981; }
   .btn-red { background: #ef4444; color: #fff; border-color: #ef4444; }
@@ -28,7 +29,6 @@
   .btn-outline { background: #fff; color: #b91c1c; border-color: #fca5a5; }
   .btn-dark { background: #1f2937; color: #fff; border-color: #1f2937; }
   .btn-purple { background: #7c3aed; color: #fff; border-color: #7c3aed; }
-  .btn-teal { background: #0d9488; color: #fff; border-color: #0d9488; }
   .separator { width: 1px; height: 24px; background: #ddd; margin: 0 4px; }
   .info-bar { padding: 10px 20px; background: #f0f4ff; border-bottom: 1px solid #ddd; font-size: 13px; display: flex; flex-wrap: wrap; gap: 8px; }
   .info-bar span { background: #fff; padding: 4px 10px; border: 1px solid #ccc; border-radius: 3px; }
@@ -89,7 +89,21 @@
   .share-box p, .share-box ul { font-size: 11px; color: #4c1d95; margin-bottom: 8px; line-height: 1.5; }
   .share-box ul { margin-left: 18px; }
   .share-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-  /* Subject list */
+  .class-list { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; margin-bottom: 10px; max-height: 320px; overflow-y: auto; }
+  .class-item { display: flex; align-items: center; padding: 8px 10px; background: #fff; border-bottom: 1px solid #f3f4f6; gap: 8px; }
+  .class-item:last-child { border-bottom: none; }
+  .class-item .class-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .class-item .class-name { font-size: 13px; font-weight: 600; color: #1f2937; }
+  .class-item .class-meta { font-size: 11px; color: #6b7280; }
+  .class-item .class-actions { display: flex; gap: 4px; }
+  .class-item .class-actions button { padding: 4px 8px; font-size: 11px; border-radius: 3px; }
+  .class-item.editing { background: #fef3c7; }
+  .class-item.editing input { flex: 1; padding: 5px 8px; font-size: 13px; }
+  .class-item.active { background: #dbeafe; border-left: 3px solid #2a5298; }
+  .class-add { display: flex; gap: 6px; margin-top: 8px; }
+  .class-add input { flex: 1; }
+  .class-empty { padding: 15px; text-align: center; color: #888; font-size: 12px; }
+  .class-toolbar { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
   .subject-list { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
   .subject-item { display: flex; align-items: center; padding: 8px 10px; background: #fff; border-bottom: 1px solid #f3f4f6; gap: 8px; }
   .subject-item:last-child { border-bottom: none; }
@@ -101,7 +115,6 @@
   .subject-add { display: flex; gap: 6px; margin-top: 8px; }
   .subject-add input { flex: 1; }
   .subject-empty { padding: 15px; text-align: center; color: #888; font-size: 12px; }
-  /* Print settings */
   .print-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
   .radio-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px; }
@@ -122,11 +135,11 @@
 <div class="container">
   <header>
     <div class="school-info">
-      <h1 id="headerSchool">📚 SMKN 1 GONDANG</h1>
+      <h1 id="headerSchool"> SMKN 1 GONDANG</h1>
       <p id="headerSub">Sistem Absensi Siswa • <span id="headerTA">TA 2026/2027</span> • <span id="headerClock">--:--:--</span></p>
-      <div class="teacher" id="headerTeacher">👨‍🏫 Guru: - | 📖 Mapel: -</div>
+      <div class="teacher" id="headerTeacher">👨🏫 Guru: - | 📖 Mapel: -</div>
     </div>
-    <div class="school-badge" id="headerBadge">15 Kelas • 50 Pertemuan</div>
+    <div class="school-badge" id="headerBadge">9 Kelas • 50 Pertemuan</div>
   </header>
 
   <div class="toolbar">
@@ -136,17 +149,15 @@
     <select id="classSelect"></select>
     <label>Mapel:</label>
     <select id="subjectSelect" onchange="changeClassSubject(this.value)"></select>
-    <button class="btn-orange" onclick="openRenameModal()">✏️ Rename</button>
-    <button onclick="resetClassName()">↩️ Default</button>
     <div class="separator"></div>
     <button class="btn-blue" onclick="importExcel()">📥 Import</button>
-    <button class="btn-green" onclick="exportExcel()">📤 Export</button>
+    <button class="btn-green" onclick="exportExcel()"> Export</button>
     <button onclick="downloadTemplate()">📋 Template</button>
     <div class="separator"></div>
     <button class="btn-cyan" onclick="printRekap(currentClass)">🖨️ Cetak</button>
     <button class="btn-cyan" onclick="printAllRekap()">🖨️ Semua</button>
     <div class="separator"></div>
-    <button class="btn-purple" onclick="downloadHTML()">💾 Download HTML</button>
+    <button class="btn-purple" onclick="downloadHTML()"> Download HTML</button>
     <div class="separator"></div>
     <button class="btn-red" onclick="resetData()">🧹 Reset Data</button>
     <button class="btn-outline" onclick="resetTotal()">🗑 Reset Total</button>
@@ -201,6 +212,21 @@
       <input type="text" id="setNip" maxlength="30">
     </div>
 
+    <div class="section-title"> Daftar Kelas (CRUD)</div>
+    <p style="font-size:11px; color:#666; margin-bottom:8px;">
+      Tambah, edit, atau hapus kelas sesuai kebutuhan. Baris biru = kelas yang sedang aktif.
+    </p>
+    <div id="classListContainer"></div>
+    <div class="class-add">
+      <input type="text" id="newClassInput" placeholder="Nama kelas baru (contoh: X DKV 3)..." maxlength="30">
+      <button class="btn-green" onclick="addClass()"> Tambah Kelas</button>
+    </div>
+    <div class="class-toolbar">
+      <button class="btn-orange" onclick="resetClassesToDefault()">🔄 Reset ke 15 Kelas Default</button>
+      <button class="btn-gray" onclick="sortClasses()">↕️ Urutkan Nama</button>
+    </div>
+    <div class="form-hint">💡 Minimal 1 kelas harus ada. Menghapus kelas akan menghapus semua data siswa & absensinya.</div>
+
     <div class="section-title">📚 Daftar Mata Pelajaran</div>
     <p style="font-size:11px; color:#666; margin-bottom:8px;">
       Kelola daftar mata pelajaran. Setiap kelas dapat memilih mapel dari daftar ini.
@@ -208,7 +234,7 @@
     <div id="subjectListContainer"></div>
     <div class="subject-add">
       <input type="text" id="newSubjectInput" placeholder="Nama mata pelajaran baru..." maxlength="40">
-      <button class="btn-green" onclick="addSubject()">➕ Tambah</button>
+      <button class="btn-green" onclick="addSubject()"> Tambah</button>
     </div>
     <div class="form-hint">💡 Minimal 1 mata pelajaran harus ada. Mapel yang sedang dipakai kelas tidak bisa dihapus.</div>
 
@@ -227,11 +253,10 @@
         <label>Orientasi</label>
         <div class="radio-group">
           <label><input type="radio" name="setOrientation" value="portrait" checked> 📄 Portrait</label>
-          <label><input type="radio" name="setOrientation" value="landscape"> 📐 Landscape</label>
+          <label><input type="radio" name="setOrientation" value="landscape">  Landscape</label>
         </div>
       </div>
     </div>
-    <div class="form-hint">💡 Default: A4 Portrait. F4/Folio adalah ukuran kertas umum di Indonesia.</div>
 
     <div class="section-title">🕐 Jadwal Pelajaran per Hari</div>
     <p style="font-size:11px; color:#666; margin-bottom:8px;">
@@ -245,33 +270,20 @@
       <p>Unduh file HTML baru berisi SEMUA perubahan. File bisa dibagikan dan langsung dipakai.</p>
       <ul>
         <li>✅ Identitas sekolah, guru, tahun ajaran</li>
-        <li>✅ Daftar mata pelajaran + mapel per kelas</li>
+        <li>✅ Daftar kelas + mapel per kelas</li>
+        <li>✅ Daftar mata pelajaran</li>
         <li>✅ Jadwal pelajaran (Senin / Selasa-Kamis / Jumat)</li>
-        <li>✅ Nama kelas, data siswa, absensi, materi</li>
-        <li>✅ Pengaturan cetak (kertas & orientasi)</li>
+        <li>✅ Data siswa, absensi, materi, pengaturan cetak</li>
       </ul>
       <div class="share-actions">
         <button class="btn-purple" onclick="downloadHTML()">💾 Download HTML</button>
-        <button class="btn-gray" onclick="clearEmbeddedData()">🗑 Hapus Data Ter-Embed</button>
+        <button class="btn-gray" onclick="clearEmbeddedData()"> Hapus Data Ter-Embed</button>
       </div>
     </div>
 
     <div class="modal-actions">
       <button onclick="closeSettingsModal()">Batal</button>
       <button class="btn-blue" onclick="saveSettings()">💾 Simpan Semua</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Rename Kelas -->
-<div class="modal-bg" id="renameModal">
-  <div class="modal">
-    <h3>✏️ Ganti Nama Kelas</h3>
-    <p>Nama kelas berlaku untuk data, hasil cetak, dan file Excel.</p>
-    <input type="text" id="renameInput" maxlength="30" placeholder="Contoh: X DKV 1">
-    <div class="modal-actions">
-      <button onclick="closeRenameModal()">Batal</button>
-      <button class="btn-blue" onclick="saveRename()">Simpan</button>
     </div>
   </div>
 </div>
@@ -293,9 +305,9 @@
 
 <script>
 /* ===== KONFIGURASI ===== */
-const TOTAL_CLASSES = 15;
+const DEFAULT_CLASS_COUNT = 15;
 const MAX_MEETINGS = 50;
-const STORAGE_KEY = 'absensiSiswa_v12';
+const STORAGE_KEY = 'absensiSiswa_v14';
 const STATUS_CYCLE = ['H', 'S', 'I', 'A'];
 const DEFAULT_SUBJECTS = ['Informatika', 'PAI', 'PKK'];
 const PAPER_SIZES = {
@@ -339,13 +351,17 @@ let currentMeeting = 1;
 let clockInterval = null;
 let tempSchedule = { senin: [], selasa_kamis: [], jumat: [] };
 let tempSubjects = [];
+let tempClasses = [];
 
 function defaultState() {
   const classes = [];
-  for (let i = 1; i <= TOTAL_CLASSES; i++) {
+  for (let i = 1; i <= DEFAULT_CLASS_COUNT; i++) {
     classes.push({
-      id: i, name: `Kelas ${i}`, subject: DEFAULT_SUBJECTS[0],
-      students: [], attendance: {}, meetings: 0, meetingsData: {}
+      id: 'c_' + i + '_' + Date.now(),
+      name: `Kelas ${i}`,
+      subject: DEFAULT_SUBJECTS[0],
+      students: [], attendance: {},
+      meetings: 0, meetingsData: {}
     });
   }
   return {
@@ -383,7 +399,7 @@ function loadState() {
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const legacy = !raw ? (localStorage.getItem('absensiSiswa_v11') || localStorage.getItem('absensiSiswa_v10') || localStorage.getItem('absensiSiswa_v9') || localStorage.getItem('absensiSiswa_v8') || localStorage.getItem('absensiSiswa_v7') || localStorage.getItem('absensiSiswa_v6') || localStorage.getItem('absensiSiswa_v5')) : raw;
+    const legacy = !raw ? (localStorage.getItem('absensiSiswa_v13') || localStorage.getItem('absensiSiswa_v12') || localStorage.getItem('absensiSiswa_v11') || localStorage.getItem('absensiSiswa_v10') || localStorage.getItem('absensiSiswa_v9') || localStorage.getItem('absensiSiswa_v8') || localStorage.getItem('absensiSiswa_v7') || localStorage.getItem('absensiSiswa_v6') || localStorage.getItem('absensiSiswa_v5')) : raw;
     if (legacy) return migrateState(JSON.parse(legacy));
   } catch(e) {}
   return defaultState();
@@ -397,7 +413,6 @@ function migrateState(s) {
   if (!s.teacherName) s.teacherName = '';
   if (!s.nip) s.nip = '';
 
-  // Migration subjects (dari string tunggal ke array)
   if (!Array.isArray(s.subjects)) {
     const oldSubject = s.subject || 'Informatika';
     s.subjects = [oldSubject];
@@ -405,14 +420,12 @@ function migrateState(s) {
   }
   if (s.subjects.length === 0) s.subjects = [...DEFAULT_SUBJECTS];
 
-  // Migration printSettings
   if (!s.printSettings || typeof s.printSettings !== 'object') {
     s.printSettings = { paperSize: 'A4', orientation: 'portrait' };
   }
   if (!PAPER_SIZES[s.printSettings.paperSize]) s.printSettings.paperSize = 'A4';
   if (!['portrait', 'landscape'].includes(s.printSettings.orientation)) s.printSettings.orientation = 'portrait';
 
-  // Migration schedule
   if (!s.schedule || typeof s.schedule !== 'object' || Array.isArray(s.schedule)) {
     const oldArr = Array.isArray(s.schedule) ? s.schedule : DEFAULT_SCHEDULE_SELASA_KAMIS;
     s.schedule = {
@@ -426,21 +439,27 @@ function migrateState(s) {
     if (!Array.isArray(s.schedule.jumat)) s.schedule.jumat = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE_JUMAT));
   }
 
-  // Migration classes
-  while (s.classes.length < TOTAL_CLASSES) {
-    const n = s.classes.length + 1;
-    s.classes.push({ id: n, name: `Kelas ${n}`, subject: s.subjects[0], students: [], attendance: {}, meetings: 0, meetingsData: {} });
-  }
-  s.classes.forEach(c => {
+  s.classes.forEach((c, i) => {
+    if (!c.id) c.id = 'c_' + (i+1) + '_' + Date.now();
     if (!c.students) c.students = [];
     if (!c.attendance) c.attendance = {};
     if (!c.meetingsData) c.meetingsData = {};
     c.meetings = Math.min(MAX_MEETINGS, Number(c.meetings) || 0);
-    // Assign subject ke kelas (jika belum ada atau tidak valid)
-    if (!c.subject || !s.subjects.includes(c.subject)) {
-      c.subject = s.subjects[0];
-    }
+    if (!c.subject || !s.subjects.includes(c.subject)) c.subject = s.subjects[0];
+    if (!c.name) c.name = `Kelas ${i+1}`;
   });
+
+  if (s.classes.length === 0) {
+    for (let i = 1; i <= DEFAULT_CLASS_COUNT; i++) {
+      s.classes.push({
+        id: 'c_' + i + '_' + Date.now(),
+        name: `Kelas ${i}`,
+        subject: s.subjects[0],
+        students: [], attendance: {},
+        meetings: 0, meetingsData: {}
+      });
+    }
+  }
   return s;
 }
 
@@ -526,11 +545,12 @@ function startClock() {
 
 /* ===== HEADER ===== */
 function renderHeader() {
-  document.getElementById('headerSchool').textContent = '📚 ' + state.schoolName;
+  document.getElementById('headerSchool').textContent = ' ' + state.schoolName;
   document.getElementById('headerTA').textContent = 'TA ' + state.academicYear;
   const teacher = state.teacherName || '-';
-  const subject = state.classes[currentClass].subject || '-';
-  document.getElementById('headerTeacher').textContent = `👨‍🏫 Guru: ${teacher} | 📖 Mapel: ${subject}`;
+  const subject = state.classes[currentClass] ? state.classes[currentClass].subject || '-' : '-';
+  document.getElementById('headerTeacher').textContent = `‍🏫 Guru: ${teacher} | 📖 Mapel: ${subject}`;
+  document.getElementById('headerBadge').textContent = `${state.classes.length} Kelas • ${MAX_MEETINGS} Pertemuan`;
 }
 
 /* ===== RENDER ===== */
@@ -543,6 +563,7 @@ function renderClassSelect() {
     opt.textContent = `${c.name} (${c.students.length})`;
     sel.appendChild(opt);
   });
+  if (currentClass >= state.classes.length) currentClass = 0;
   sel.value = currentClass;
   sel.onchange = e => {
     currentClass = +e.target.value;
@@ -614,7 +635,7 @@ function renderMeetingForm() {
   const catLabel = getDayCategoryLabel(cat);
   const info = getCurrentHourInfo();
   const statusText = info.status === 'active' ? '🟢 Sedang berlangsung'
-                   : info.status === 'before' ? '⏳ Belum mulai' : '✅ Sudah selesai';
+                   : info.status === 'before' ? ' Belum mulai' : '✅ Sudah selesai';
   let opts = '';
   schedForDate.forEach(s => {
     const selected = d.hour == s.hour ? 'selected' : '';
@@ -626,7 +647,7 @@ function renderMeetingForm() {
       <span>🕐 Waktu sekarang: <b>${formatClock()}</b></span>
       <span class="auto-badge">Auto: Jam Ke-${info.hour}</span>
       <span>${statusText}</span>
-      <button class="btn-blue" style="padding:3px 10px; font-size:11px; margin-left:auto;" onclick="autoDetectHour()">🔄 Deteksi Ulang</button>
+      <button class="btn-blue" style="padding:3px 10px; font-size:11px; margin-left:auto;" onclick="autoDetectHour()"> Deteksi Ulang</button>
     </div>
     <div class="form-row">
       <div><label>Tanggal Pertemuan</label>
@@ -641,7 +662,7 @@ function renderMeetingForm() {
         <textarea id="meetingMaterial" placeholder="Tuliskan materi..." onchange="updateMeetingData()">${esc(d.material)}</textarea></div>
     </div>
     <div style="font-size:11px; color:#6b7280; margin-top:4px;">
-      📅 Hari: <b>${dayName}</b> • 📖 Mapel: <b>${esc(c.subject)}</b> • 🏫 Kelas: <b>${esc(c.name)}</b>
+      📅 Hari: <b>${dayName}</b> •  Mapel: <b>${esc(c.subject)}</b> • 🏫 Kelas: <b>${esc(c.name)}</b>
     </div>`;
 }
 
@@ -722,6 +743,15 @@ function renderTable() {
 }
 
 function render() {
+  if (state.classes.length === 0) {
+    state.classes.push({
+      id: 'c_default_' + Date.now(),
+      name: 'Kelas 1',
+      subject: state.subjects[0],
+      students: [], attendance: {},
+      meetings: 0, meetingsData: {}
+    });
+  }
   const c = state.classes[currentClass];
   if (currentMeeting > c.meetings) currentMeeting = Math.max(1, c.meetings);
   renderHeader();
@@ -733,6 +763,169 @@ function render() {
   saveState();
 }
 
+/* ===== CRUD KELAS ===== */
+function renderClassList() {
+  const container = document.getElementById('classListContainer');
+  if (tempClasses.length === 0) {
+    container.innerHTML = '<div class="class-empty">Belum ada kelas. Tambahkan di bawah.</div>';
+    return;
+  }
+  let html = '<div class="class-list">';
+  tempClasses.forEach((cls, idx) => {
+    const isActive = idx === currentClass;
+    const studentCount = cls.students ? cls.students.length : 0;
+    const meetingCount = cls.meetings || 0;
+    html += `<div class="class-item ${isActive ? 'active' : ''}" id="class-item-${idx}">
+      <div class="class-info">
+        <span class="class-name" id="class-name-${idx}">
+          ${isActive ? '🔵 ' : ''}${esc(cls.name)}
+        </span>
+        <span class="class-meta">
+          📖 ${esc(cls.subject || '-')} • 👥 ${studentCount} siswa • 📅 ${meetingCount} pertemuan
+        </span>
+      </div>
+      <div class="class-actions">
+        <button class="btn-blue" onclick="startEditClass(${idx})">✏️ Edit</button>
+        <button class="btn-red" onclick="removeClass(${idx})" ${tempClasses.length === 1 ? 'disabled title="Minimal 1 kelas harus ada"' : ''}></button>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function startEditClass(idx) {
+  const item = document.getElementById(`class-item-${idx}`);
+  const nameEl = document.getElementById(`class-name-${idx}`);
+  const oldName = tempClasses[idx].name;
+
+  const infoEl = item.querySelector('.class-info');
+  item.classList.add('editing');
+  infoEl.innerHTML = `
+    <input type="text" id="class-edit-${idx}" value="${esc(oldName)}" maxlength="30" placeholder="Nama kelas...">
+    <span class="class-meta">Tekan Enter untuk simpan, Esc untuk batal</span>
+  `;
+  const input = document.getElementById(`class-edit-${idx}`);
+  input.focus();
+  input.select();
+
+  const actionsEl = item.querySelector('.class-actions');
+  actionsEl.innerHTML = `
+    <button class="btn-green" onclick="saveEditClass(${idx})">💾</button>
+    <button class="btn-gray" onclick="cancelEditClass(${idx})">✖</button>
+  `;
+
+  input.onkeydown = e => {
+    if (e.key === 'Enter') saveEditClass(idx);
+    if (e.key === 'Escape') cancelEditClass(idx);
+  };
+}
+
+function saveEditClass(idx) {
+  const input = document.getElementById(`class-edit-${idx}`);
+  const newName = input.value.trim();
+  const oldName = tempClasses[idx].name;
+  if (!newName) { toast('Nama kelas tidak boleh kosong!', 'error'); return; }
+  if (newName.length > 30) { toast('Maksimal 30 karakter!', 'error'); return; }
+  if (tempClasses.some((c, i) => i !== idx && c.name.toLowerCase() === newName.toLowerCase())) {
+    toast(`Nama kelas "${newName}" sudah ada!`, 'error'); return;
+  }
+  tempClasses[idx].name = newName;
+  renderClassList();
+  toast(`✅ "${oldName}" → "${newName}"`);
+}
+
+function cancelEditClass(idx) {
+  renderClassList();
+}
+
+function addClass() {
+  const input = document.getElementById('newClassInput');
+  let name = input.value.trim();
+  if (!name) {
+    const existingNums = tempClasses.map(c => {
+      const m = c.name.match(/(\d+)$/);
+      return m ? parseInt(m[1]) : 0;
+    });
+    const maxNum = existingNums.length > 0 ? Math.max(...existingNums) : 0;
+    name = `Kelas ${maxNum + 1}`;
+  }
+  if (name.length > 30) { toast('Maksimal 30 karakter!', 'error'); return; }
+  if (tempClasses.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+    toast(`Nama kelas "${name}" sudah ada!`, 'error'); return;
+  }
+  tempClasses.push({
+    id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+    name: name,
+    subject: state.subjects[0],
+    students: [],
+    attendance: {},
+    meetings: 0,
+    meetingsData: {}
+  });
+  input.value = '';
+  renderClassList();
+  toast(`✅ Kelas "${name}" ditambahkan`);
+}
+
+function removeClass(idx) {
+  if (tempClasses.length === 1) {
+    toast('❌ Minimal 1 kelas harus ada!', 'error');
+    return;
+  }
+  const cls = tempClasses[idx];
+  const studentCount = cls.students ? cls.students.length : 0;
+  const meetingCount = cls.meetings || 0;
+  const warnMsg = studentCount > 0 || meetingCount > 0
+    ? `Kelas "${cls.name}" memiliki ${studentCount} siswa dan ${meetingCount} pertemuan. Semua data akan DIHAPUS permanen!`
+    : `Hapus kelas "${cls.name}"?`;
+
+  showConfirm('🗑 Hapus Kelas', warnMsg + '\n\nTindakan ini tidak bisa dibatalkan.', () => {
+    const wasActive = idx === currentClass;
+    tempClasses.splice(idx, 1);
+    if (wasActive) {
+      currentClass = 0;
+      currentMeeting = 1;
+    } else if (idx < currentClass) {
+      currentClass--;
+    }
+    renderClassList();
+    toast(`✅ Kelas "${cls.name}" dihapus`);
+  }, false);
+}
+
+function resetClassesToDefault() {
+  showConfirm('🔄 Reset Daftar Kelas ke Default',
+    'Kembalikan daftar kelas menjadi 15 kelas default (Kelas 1 s/d Kelas 15)?\n\n⚠️ PERINGATAN: Semua data siswa, absensi, dan materi dari kelas yang ada saat ini akan DIHAPUS!',
+    () => {
+      tempClasses = [];
+      for (let i = 1; i <= DEFAULT_CLASS_COUNT; i++) {
+        tempClasses.push({
+          id: 'c_' + i + '_' + Date.now(),
+          name: `Kelas ${i}`,
+          subject: state.subjects[0],
+          students: [], attendance: {},
+          meetings: 0, meetingsData: {}
+        });
+      }
+      currentClass = 0;
+      currentMeeting = 1;
+      renderClassList();
+      toast('✅ Daftar kelas dikembalikan ke 15 kelas default');
+    }, false);
+}
+
+function sortClasses() {
+  const activeName = tempClasses[currentClass] ? tempClasses[currentClass].name : null;
+  tempClasses.sort((a,b) => a.name.localeCompare(b.name, 'id', { numeric: true }));
+  if (activeName) {
+    const newIdx = tempClasses.findIndex(c => c.name === activeName);
+    if (newIdx >= 0) currentClass = newIdx;
+  }
+  renderClassList();
+  toast('✅ Kelas diurutkan berdasarkan nama');
+}
+
 /* ===== CRUD MATA PELAJARAN ===== */
 function renderSubjectList() {
   const container = document.getElementById('subjectListContainer');
@@ -742,14 +935,13 @@ function renderSubjectList() {
   }
   let html = '<div class="subject-list">';
   tempSubjects.forEach((subj, idx) => {
-    // Cek apakah mapel ini dipakai oleh kelas manapun
-    const usedBy = state.classes.filter(c => c.subject === subj).map(c => c.name);
-    const canDelete = usedBy.length === 0;
+    const usedBy = state.classes.filter(c => c.subject === subj).length;
+    const canDelete = usedBy === 0 && tempSubjects.length > 1;
     html += `<div class="subject-item" id="subj-item-${idx}">
-      <span class="subj-name" id="subj-name-${idx}">${esc(subj)}</span>
+      <span class="subj-name" id="subj-name-${idx}">${esc(subj)}${usedBy > 0 ? ` <span style="color:#6b7280;font-size:11px;">(${usedBy} kelas)</span>` : ''}</span>
       <div class="subj-actions">
-        <button class="btn-blue" onclick="startEditSubject(${idx})">✏️ Edit</button>
-        <button class="btn-red" onclick="removeSubject(${idx})" ${!canDelete ? 'disabled style="opacity:.5;cursor:not-allowed;" title="Mapel sedang dipakai '+usedBy.length+' kelas"' : ''}>🗑</button>
+        <button class="btn-blue" onclick="startEditSubject(${idx})">✏️</button>
+        <button class="btn-red" onclick="removeSubject(${idx})" ${!canDelete ? 'disabled' : ''}>🗑</button>
       </div>
     </div>`;
   });
@@ -766,11 +958,10 @@ function startEditSubject(idx) {
   const input = document.getElementById(`subj-edit-${idx}`);
   input.focus();
   input.select();
-  // Ganti tombol Edit jadi Save & Cancel
   const actionsEl = item.querySelector('.subj-actions');
   actionsEl.innerHTML = `
-    <button class="btn-green" onclick="saveEditSubject(${idx})">💾 Simpan</button>
-    <button class="btn-gray" onclick="cancelEditSubject(${idx})">Batal</button>
+    <button class="btn-green" onclick="saveEditSubject(${idx})">💾</button>
+    <button class="btn-gray" onclick="cancelEditSubject(${idx})">✖</button>
   `;
   input.onkeydown = e => {
     if (e.key === 'Enter') saveEditSubject(idx);
@@ -784,16 +975,15 @@ function saveEditSubject(idx) {
   const oldName = tempSubjects[idx];
   if (!newName) { toast('Nama mapel tidak boleh kosong!', 'error'); return; }
   if (newName === oldName) { cancelEditSubject(idx); return; }
-  // Cek duplikat
   if (tempSubjects.some((s, i) => i !== idx && s.toLowerCase() === newName.toLowerCase())) {
     toast(`Mapel "${newName}" sudah ada!`, 'error'); return;
   }
   tempSubjects[idx] = newName;
-  // Update semua kelas yang pakai mapel lama
-  state.classes.forEach(c => {
+  tempClasses.forEach(c => {
     if (c.subject === oldName) c.subject = newName;
   });
   renderSubjectList();
+  renderClassList();
   toast(`✅ "${oldName}" → "${newName}"`);
 }
 
@@ -807,8 +997,7 @@ function addSubject() {
   if (!name) { toast('Nama mapel tidak boleh kosong!', 'error'); return; }
   if (name.length > 40) { toast('Maksimal 40 karakter!', 'error'); return; }
   if (tempSubjects.some(s => s.toLowerCase() === name.toLowerCase())) {
-    toast(`Mapel "${name}" sudah ada!`, 'error'); return;
-  }
+    toast(`Mapel "${name}" sudah ada!`, 'error'); return; }
   tempSubjects.push(name);
   input.value = '';
   renderSubjectList();
@@ -817,22 +1006,20 @@ function addSubject() {
 
 function removeSubject(idx) {
   const name = tempSubjects[idx];
-  const usedBy = state.classes.filter(c => c.subject === name);
-  if (usedBy.length > 0) {
-    toast(`❌ Mapel "${name}" sedang dipakai ${usedBy.length} kelas. Ubah mapel kelas tersebut dulu.`, 'error');
+  const usedBy = tempClasses.filter(c => c.subject === name).length;
+  if (usedBy > 0) {
+    toast(`❌ Mapel "${name}" sedang dipakai ${usedBy} kelas.`, 'error');
     return;
   }
   if (tempSubjects.length === 1) {
     toast('❌ Minimal 1 mata pelajaran harus ada!', 'error');
     return;
   }
-  showConfirm(`🗑 Hapus Mata Pelajaran`,
-    `Hapus mapel "${name}"? Tindakan ini tidak bisa dibatalkan.`,
-    () => {
-      tempSubjects.splice(idx, 1);
-      renderSubjectList();
-      toast(`✅ Mapel "${name}" dihapus`);
-    }, false);
+  showConfirm(`🗑 Hapus Mata Pelajaran`, `Hapus mapel "${name}"?`, () => {
+    tempSubjects.splice(idx, 1);
+    renderSubjectList();
+    toast(`✅ Mapel "${name}" dihapus`);
+  }, false);
 }
 
 /* ===== SETTINGS ===== */
@@ -841,9 +1028,9 @@ function renderScheduleEditContainer() {
   const todayDow = new Date().getDay();
   const todayCat = getDayCategory(todayDow);
   const sections = [
-    { key: 'senin', label: 'SENIN', desc: 'Jadwal hari Senin', color: '#dc2626' },
-    { key: 'selasa_kamis', label: 'SELASA - KAMIS', desc: 'Jadwal Selasa, Rabu, Kamis', color: '#2a5298' },
-    { key: 'jumat', label: 'JUMAT', desc: 'Jadwal hari Jumat', color: '#059669' }
+    { key: 'senin', label: 'SENIN', color: '#dc2626' },
+    { key: 'selasa_kamis', label: 'SELASA - KAMIS', color: '#2a5298' },
+    { key: 'jumat', label: 'JUMAT', color: '#059669' }
   ];
   let html = '';
   sections.forEach(sec => {
@@ -852,7 +1039,7 @@ function renderScheduleEditContainer() {
     const info = isToday ? getCurrentHourInfo() : null;
     html += `<div class="day-section ${isToday ? 'today' : ''}">
       <h4 style="color:${sec.color}">
-        📅 ${sec.label}
+         ${sec.label}
         ${isToday ? '<span class="today-tag">HARI INI</span>' : ''}
         <span style="font-weight:normal; color:#6b7280; font-size:11px; margin-left:auto;">${sched.length} jam</span>
       </h4>
@@ -877,7 +1064,7 @@ function renderScheduleEditContainer() {
     if (sched.length === 0) html += `<tr><td colspan="5" style="padding:8px; color:#888;">Belum ada jam.</td></tr>`;
     html += `</tbody></table>
       <div class="schedule-actions">
-        <button class="btn-blue" onclick="addScheduleRow('${sec.key}')">➕ Tambah</button>
+        <button class="btn-blue" onclick="addScheduleRow('${sec.key}')"> Tambah</button>
         <button class="btn-orange" onclick="resetScheduleDay('${sec.key}')">🔄 Reset</button>
         <button class="btn-gray" onclick="sortScheduleDay('${sec.key}')">↕️ Urutkan</button>
       </div>
@@ -950,12 +1137,14 @@ function openSettingsModal() {
   document.querySelectorAll('input[name="setOrientation"]').forEach(r => {
     r.checked = (r.value === state.printSettings.orientation);
   });
+  tempClasses = JSON.parse(JSON.stringify(state.classes));
   tempSubjects = [...state.subjects];
   tempSchedule = {
     senin: JSON.parse(JSON.stringify(state.schedule.senin)),
     selasa_kamis: JSON.parse(JSON.stringify(state.schedule.selasa_kamis)),
     jumat: JSON.parse(JSON.stringify(state.schedule.jumat))
   };
+  renderClassList();
   renderSubjectList();
   renderScheduleEditContainer();
   document.getElementById('settingsModal').classList.add('show');
@@ -974,15 +1163,17 @@ function saveSettings() {
 
   if (!name) { toast('Nama sekolah tidak boleh kosong!', 'error'); return; }
   if (!ta) { toast('Tahun ajaran tidak boleh kosong!', 'error'); return; }
+  if (tempClasses.length === 0) { toast('Minimal 1 kelas harus ada!', 'error'); return; }
   if (tempSubjects.length === 0) { toast('Minimal 1 mata pelajaran harus ada!', 'error'); return; }
   const err = validateSchedule();
-  if (err) { toast('❌ ' + err, 'error'); return; }
+  if (err) { toast(' ' + err, 'error'); return; }
 
   state.schoolName = name;
   state.schoolAddress = addr;
   state.academicYear = ta;
   state.teacherName = teacher;
   state.nip = nip;
+  state.classes = tempClasses;
   state.subjects = [...tempSubjects];
   state.printSettings = { paperSize, orientation };
   state.schedule = {
@@ -990,10 +1181,11 @@ function saveSettings() {
     selasa_kamis: tempSchedule.selasa_kamis.slice().sort((a,b) => a.hour - b.hour),
     jumat: tempSchedule.jumat.slice().sort((a,b) => a.hour - b.hour)
   };
-  // Pastikan setiap kelas punya subject yang valid
   state.classes.forEach(c => {
     if (!state.subjects.includes(c.subject)) c.subject = state.subjects[0];
   });
+  if (currentClass >= state.classes.length) currentClass = 0;
+
   saveState(); render(); closeSettingsModal();
   toast('✅ Semua pengaturan disimpan');
 }
@@ -1026,7 +1218,7 @@ function downloadHTML() {
 
 function clearEmbeddedData() {
   showConfirm('🗑 Hapus Data Ter-Embed',
-    'Hapus data yang ter-embed di HTML ini? Aplikasi akan kembali ke kondisi default saat dibuka berikutnya.',
+    'Hapus data yang ter-embed di HTML ini?',
     () => {
       const el = document.getElementById('embedded-data');
       if (el) el.textContent = '';
@@ -1034,40 +1226,14 @@ function clearEmbeddedData() {
     }, false);
 }
 
-/* ===== RENAME KELAS ===== */
-function openRenameModal() {
-  document.getElementById('renameInput').value = state.classes[currentClass].name;
-  document.getElementById('renameModal').classList.add('show');
-  setTimeout(() => { const inp = document.getElementById('renameInput'); inp.focus(); inp.select(); }, 80);
-}
-function closeRenameModal() { document.getElementById('renameModal').classList.remove('show'); }
-function saveRename() {
-  const name = document.getElementById('renameInput').value.trim();
-  if (!name) { toast('Nama tidak boleh kosong!', 'error'); return; }
-  if (name.length > 30) { toast('Maksimal 30 karakter!', 'error'); return; }
-  const dup = state.classes.find((c,i) => i !== currentClass && c.name.toLowerCase() === name.toLowerCase());
-  if (dup) { toast(`Nama "${name}" sudah dipakai!`, 'error'); return; }
-  const old = state.classes[currentClass].name;
-  state.classes[currentClass].name = name;
-  saveState(); render(); closeRenameModal();
-  toast(`✅ ${old} → ${name}`);
-}
-function resetClassName() {
-  const c = state.classes[currentClass];
-  const def = `Kelas ${c.id}`;
-  if (c.name === def) { toast('Sudah nama default', 'error'); return; }
-  showConfirm('↩️ Kembalikan Nama Kelas', `Ubah "${c.name}" menjadi "${def}"?`, () => {
-    c.name = def; saveState(); render(); toast('Nama kelas dikembalikan');
-  }, false);
-}
-
 /* ===== RESET DATA ===== */
 function resetData() {
   showConfirm('🧹 Reset Data Siswa, Absensi & Materi',
-    'Semua DATA SISWA, ABSENSI, MATERI akan DIHAPUS.\n\nIdentitas sekolah, guru, mapel, jadwal, nama kelas, dan pengaturan cetak TETAP tersimpan.',
+    'Semua DATA SISWA, ABSENSI, MATERI akan DIHAPUS.\n\nIdentitas sekolah, guru, daftar kelas, mapel, jadwal, dan pengaturan cetak TETAP tersimpan.',
     () => {
-      const savedNames = state.classes.map(c => c.name);
-      const savedSubjects = state.classes.map(c => c.subject);
+      const savedClasses = JSON.parse(JSON.stringify(state.classes)).map(c => ({
+        id: c.id, name: c.name, subject: c.subject
+      }));
       const fresh = defaultState();
       fresh.schoolName = state.schoolName;
       fresh.schoolAddress = state.schoolAddress;
@@ -1077,20 +1243,20 @@ function resetData() {
       fresh.subjects = [...state.subjects];
       fresh.printSettings = { ...state.printSettings };
       fresh.schedule = JSON.parse(JSON.stringify(state.schedule));
-      fresh.classes.forEach((c, i) => {
-        c.name = savedNames[i] || `Kelas ${i+1}`;
-        c.subject = savedSubjects[i] && state.subjects.includes(savedSubjects[i]) ? savedSubjects[i] : state.subjects[0];
-      });
+      fresh.classes = savedClasses.map(c => ({
+        id: c.id, name: c.name, subject: c.subject,
+        students: [], attendance: {}, meetings: 0, meetingsData: {}
+      }));
       state = fresh;
       currentClass = 0; currentMeeting = 1;
       saveState(); render();
-      toast('🧹 Data dihapus.');
+      toast(' Data dihapus.');
     }, true
   );
 }
 function resetTotal() {
-  showConfirm('🗑 Reset Total (Termasuk Nama Kelas)',
-    'SEMUA data dihapus, nama kelas kembali ke default.\n\nIdentitas sekolah, guru, daftar mapel, jadwal, dan pengaturan cetak TETAP tersimpan.',
+  showConfirm('🗑 Reset Total (Termasuk Daftar Kelas)',
+    'SEMUA data dihapus, termasuk daftar kelas kembali ke 15 kelas default.\n\nIdentitas sekolah, guru, daftar mapel, jadwal, dan pengaturan cetak TETAP tersimpan.',
     () => {
       const fresh = defaultState();
       fresh.schoolName = state.schoolName;
@@ -1279,7 +1445,7 @@ function handleFile(e) {
           if (byName >= 0) idx = byName;
           else {
             const num = parseInt(val.replace(/[^0-9]/g,''));
-            if (num >= 1 && num <= 15) idx = num-1;
+            if (num >= 1 && num <= state.classes.length) idx = num-1;
           }
         }
         const nama = String(r[nameKey]).trim();
@@ -1315,9 +1481,9 @@ function exportExcel() {
     { 'Item': 'Nama Guru', 'Value': state.teacherName || '-' },
     { 'Item': 'NIP', 'Value': state.nip || '-' },
     { 'Item': 'Daftar Mata Pelajaran', 'Value': state.subjects.join(', ') },
+    { 'Item': 'Jumlah Kelas', 'Value': state.classes.length },
     { 'Item': 'Pengaturan Cetak', 'Value': `${state.printSettings.paperSize} - ${state.printSettings.orientation}` },
     { 'Item': 'Tanggal Export', 'Value': new Date().toLocaleString('id-ID') },
-    { 'Item': 'Jumlah Kelas Aktif', 'Value': state.classes.filter(c => c.students.length > 0).length },
     { 'Item': 'Total Siswa', 'Value': state.classes.reduce((a,c) => a + c.students.length, 0) }
   ];
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(infoRows), 'Info Sekolah');
@@ -1391,8 +1557,7 @@ function showConfirm(title, msg, onOk, keepIdentity=false) {
 }
 function closeModal() { document.getElementById('modal').classList.remove('show'); }
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('renameModal').classList.contains('show')) saveRename();
-  if (e.key === 'Escape') { closeRenameModal(); closeModal(); closeSettingsModal(); }
+  if (e.key === 'Escape') { closeModal(); closeSettingsModal(); }
 });
 
 /* ===== INIT ===== */
