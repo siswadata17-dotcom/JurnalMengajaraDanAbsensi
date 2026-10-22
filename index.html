@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="id"><head>
+<html lang="id">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Absensi Siswa - SMKN 1 GONDANG</title>
@@ -27,6 +28,7 @@
   .btn-outline { background: #fff; color: #b91c1c; border-color: #fca5a5; }
   .btn-dark { background: #1f2937; color: #fff; border-color: #1f2937; }
   .btn-purple { background: #7c3aed; color: #fff; border-color: #7c3aed; }
+  .btn-teal { background: #0d9488; color: #fff; border-color: #0d9488; }
   .separator { width: 1px; height: 24px; background: #ddd; margin: 0 4px; }
   .info-bar { padding: 10px 20px; background: #f0f4ff; border-bottom: 1px solid #ddd; font-size: 13px; display: flex; flex-wrap: wrap; gap: 8px; }
   .info-bar span { background: #fff; padding: 4px 10px; border: 1px solid #ccc; border-radius: 3px; }
@@ -65,10 +67,9 @@
   .keep-note { background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; padding: 8px; border-radius: 4px; font-size: 12px; margin-bottom: 12px; }
   .form-group { margin-bottom: 12px; }
   .form-group label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 4px; color: #333; }
-  .form-group input { width: 100%; }
+  .form-group input, .form-group select { width: 100%; }
   .form-hint { font-size: 11px; color: #888; margin-top: -8px; margin-bottom: 10px; }
   .section-title { font-size: 12px; font-weight: bold; color: #2a5298; text-transform: uppercase; margin: 15px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #e5e7eb; }
-
   .day-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; margin-bottom: 12px; }
   .day-section.today { background: #fef3c7; border-color: #fbbf24; }
   .day-section h4 { font-size: 13px; margin-bottom: 6px; color: #1f2937; display: flex; align-items: center; gap: 6px; }
@@ -83,34 +84,47 @@
   .schedule-edit tr.current-row { background: #fef3c7; }
   .schedule-actions { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
   .schedule-actions button { font-size: 11px; padding: 4px 8px; }
-
-  /* Share section */
   .share-box { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border: 1px solid #a78bfa; border-radius: 6px; padding: 12px; margin-top: 10px; }
   .share-box h4 { font-size: 13px; color: #5b21b6; margin-bottom: 6px; }
-  .share-box p { font-size: 11px; color: #4c1d95; margin-bottom: 8px; line-height: 1.5; }
-  .share-box ul { font-size: 11px; color: #4c1d95; margin-left: 18px; margin-bottom: 10px; }
-  .share-box ul li { margin-bottom: 3px; }
+  .share-box p, .share-box ul { font-size: 11px; color: #4c1d95; margin-bottom: 8px; line-height: 1.5; }
+  .share-box ul { margin-left: 18px; }
   .share-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
+  /* Subject list */
+  .subject-list { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+  .subject-item { display: flex; align-items: center; padding: 8px 10px; background: #fff; border-bottom: 1px solid #f3f4f6; gap: 8px; }
+  .subject-item:last-child { border-bottom: none; }
+  .subject-item .subj-name { flex: 1; font-size: 13px; }
+  .subject-item .subj-actions { display: flex; gap: 4px; }
+  .subject-item .subj-actions button { padding: 3px 8px; font-size: 11px; border-radius: 3px; }
+  .subject-item.editing { background: #fef3c7; }
+  .subject-item.editing input { flex: 1; padding: 4px 8px; font-size: 13px; }
+  .subject-add { display: flex; gap: 6px; margin-top: 8px; }
+  .subject-add input { flex: 1; }
+  .subject-empty { padding: 15px; text-align: center; color: #888; font-size: 12px; }
+  /* Print settings */
+  .print-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 12px; }
+  .radio-group label:has(input:checked) { background: #dbeafe; border-color: #2a5298; color: #1e3a8a; }
   .toast { position: fixed; top: 15px; right: 15px; background: #10b981; color: #fff; padding: 10px 16px; border-radius: 4px; font-size: 13px; z-index: 300; opacity: 0; transition: opacity .3s; }
   .toast.show { opacity: 1; }
   @media (max-width: 640px) {
     .toolbar, .info-bar, .meeting-form, .table-wrap { padding: 10px; }
     .nav-group { margin-left: 0; }
     header { flex-direction: column; align-items: flex-start; }
+    .print-settings { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
-<!-- Elemen ini akan diisi data ter-embed saat HTML di-download -->
-<script id="embedded-data" type="application/json">{"schoolName":"SMKN 1 GONDANG","schoolAddress":"JL. Tunjungan - Gondang Km 3, Gondang, Kabupaten Sragen, Jawa Tengah 57254","academicYear":"2026/2027","teacherName":"Suhardi, S. Pd.","subject":"","nip":"198908172022211016","schedule":{"senin":[{"hour":1,"start":"07:00","end":"07:45"},{"hour":2,"start":"07:45","end":"08:30"},{"hour":3,"start":"08:30","end":"09:30"},{"hour":4,"start":"09:30","end":"10:15"},{"hour":5,"start":"10:15","end":"11:00"},{"hour":6,"start":"11:00","end":"11:45"},{"hour":7,"start":"11:45","end":"12:55"},{"hour":8,"start":"12:55","end":"13:40"},{"hour":9,"start":"13:40","end":"14:25"},{"hour":10,"start":"14:25","end":"15:10"}],"selasa_kamis":[{"hour":1,"start":"07:00","end":"07:45"},{"hour":2,"start":"07:45","end":"08:30"},{"hour":3,"start":"08:30","end":"09:30"},{"hour":4,"start":"09:30","end":"10:15"},{"hour":5,"start":"10:15","end":"11:00"},{"hour":6,"start":"11:00","end":"12:10"},{"hour":7,"start":"12:10","end":"12:50"},{"hour":8,"start":"12:50","end":"13:30"},{"hour":9,"start":"13:30","end":"14:10"},{"hour":10,"start":"14:10","end":"14:50"},{"hour":11,"start":"14:50","end":"15:30"}],"jumat":[{"hour":1,"start":"07:00","end":"07:45"},{"hour":2,"start":"07:45","end":"08:30"},{"hour":3,"start":"08:30","end":"09:30"},{"hour":4,"start":"09:30","end":"10:15"},{"hour":5,"start":"10:15","end":"11:00"},{"hour":6,"start":"11:00","end":"11:45"},{"hour":7,"start":"12:30","end":"13:15"},{"hour":8,"start":"13:15","end":"14:00"}]},"classes":[{"id":1,"name":"X DKV 1","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":2,"name":"X DKV 2","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":3,"name":"X DKV 3","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":4,"name":"X TAB 1","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":5,"name":"X TAB 2","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":6,"name":"X TBSM 1","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":7,"name":"X TBKR","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":8,"name":"XI DKV 1","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":9,"name":"XI DKV 3","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":10,"name":"Kelas 10","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":11,"name":"Kelas 11","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":12,"name":"Kelas 12","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":13,"name":"Kelas 13","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":14,"name":"Kelas 14","students":[],"attendance":{},"meetings":0,"meetingsData":{}},{"id":15,"name":"Kelas 15","students":[],"attendance":{},"meetings":0,"meetingsData":{}}]}</script>
+<script id="embedded-data" type="application/json"></script>
 
 <div class="container">
   <header>
     <div class="school-info">
       <h1 id="headerSchool">📚 SMKN 1 GONDANG</h1>
-      <p id="headerSub">Sistem Absensi Siswa • <span id="headerTA">TA 2026/2027</span> • <span id="headerClock">🕐 21:02:21</span></p>
-      <div class="teacher" id="headerTeacher">👨‍🏫 Guru: Suhardi, S. Pd. | Mapel: -</div>
+      <p id="headerSub">Sistem Absensi Siswa • <span id="headerTA">TA 2026/2027</span> • <span id="headerClock">--:--:--</span></p>
+      <div class="teacher" id="headerTeacher">👨‍🏫 Guru: - | 📖 Mapel: -</div>
     </div>
     <div class="school-badge" id="headerBadge">15 Kelas • 50 Pertemuan</div>
   </header>
@@ -119,7 +133,9 @@
     <button class="btn-dark" onclick="openSettingsModal()">⚙️ Settings</button>
     <div class="separator"></div>
     <label>Kelas:</label>
-    <select id="classSelect"><option value="0">X DKV 1 (0)</option><option value="1">X DKV 2 (0)</option><option value="2">X DKV 3 (0)</option><option value="3">X TAB 1 (0)</option><option value="4">X TAB 2 (0)</option><option value="5">X TBSM 1 (0)</option><option value="6">X TBKR (0)</option><option value="7">XI DKV 1 (0)</option><option value="8">XI DKV 3 (0)</option><option value="9">Kelas 10 (0)</option><option value="10">Kelas 11 (0)</option><option value="11">Kelas 12 (0)</option><option value="12">Kelas 13 (0)</option><option value="13">Kelas 14 (0)</option><option value="14">Kelas 15 (0)</option></select>
+    <select id="classSelect"></select>
+    <label>Mapel:</label>
+    <select id="subjectSelect" onchange="changeClassSubject(this.value)"></select>
     <button class="btn-orange" onclick="openRenameModal()">✏️ Rename</button>
     <button onclick="resetClassName()">↩️ Default</button>
     <div class="separator"></div>
@@ -143,10 +159,9 @@
     </div>
   </div>
 
-  <div class="info-bar" id="infoBar"><span>👥 Siswa: <b>0</b></span>
-      <span>📅 Belum ada pertemuan — klik <b>+ Pertemuan</b></span></div>
-  <div class="meeting-form" id="meetingForm"><p style="text-align:center;color:#92400e;font-size:13px;">Klik "+ Pertemuan" untuk memulai — jam otomatis terdeteksi sesuai hari ini</p></div>
-  <div class="table-wrap" id="tableWrap"><div class="empty"><h3>Belum ada pertemuan</h3><p>Klik "+ Pertemuan" untuk memulai.</p></div></div>
+  <div class="info-bar" id="infoBar"></div>
+  <div class="meeting-form" id="meetingForm"></div>
+  <div class="table-wrap" id="tableWrap"></div>
 
   <div class="legend">
     <span class="status-H">H Hadir</span>
@@ -160,293 +175,85 @@
 <!-- Modal Settings -->
 <div class="modal-bg" id="settingsModal">
   <div class="modal">
-    <h3>⚙️ Pengaturan Identitas &amp; Jadwal</h3>
-    <p style="font-size:12px; color:#666;">Data ini tampil di header, hasil cetak, dan file Excel.</p>
+    <h3>⚙️ Pengaturan Lengkap</h3>
 
     <div class="section-title">🏫 Identitas Sekolah</div>
     <div class="form-group">
       <label>Nama Sekolah</label>
-      <input type="text" id="setSchoolName" maxlength="60" placeholder="Contoh: SMKN 1 GONDANG">
+      <input type="text" id="setSchoolName" maxlength="60">
     </div>
     <div class="form-group">
       <label>Alamat Sekolah <span style="font-weight:normal; color:#888;">(opsional)</span></label>
-      <input type="text" id="setSchoolAddress" maxlength="100" placeholder="Contoh: Jl. Pendidikan No. 1, Gondang">
+      <input type="text" id="setSchoolAddress" maxlength="100">
     </div>
     <div class="form-group">
       <label>Tahun Ajaran</label>
-      <input type="text" id="setAcademicYear" maxlength="20" placeholder="Contoh: 2026/2027">
+      <input type="text" id="setAcademicYear" maxlength="20">
     </div>
 
     <div class="section-title">👨‍🏫 Identitas Guru</div>
     <div class="form-group">
       <label>Nama Guru</label>
-      <input type="text" id="setTeacherName" maxlength="60" placeholder="Contoh: Budi Santoso, S.Pd.">
-    </div>
-    <div class="form-group">
-      <label>Mata Pelajaran</label>
-      <input type="text" id="setSubject" maxlength="60" placeholder="Contoh: Desain Grafis">
+      <input type="text" id="setTeacherName" maxlength="60">
     </div>
     <div class="form-group">
       <label>NIP <span style="font-weight:normal; color:#888;">(opsional)</span></label>
-      <input type="text" id="setNip" maxlength="30" placeholder="Contoh: 19750115 200501 1 001">
+      <input type="text" id="setNip" maxlength="30">
     </div>
 
-    <div class="section-title">🕐 Jadwal Pelajaran per Hari (Bisa Diedit)</div>
+    <div class="section-title">📚 Daftar Mata Pelajaran</div>
     <p style="font-size:11px; color:#666; margin-bottom:8px;">
-      Edit jadwal untuk 3 kategori hari. Section dengan label <b style="background:#10b981;color:#fff;padding:1px 6px;border-radius:8px;font-size:10px;">HARI INI</b> adalah jadwal aktif hari ini.
+      Kelola daftar mata pelajaran. Setiap kelas dapat memilih mapel dari daftar ini.
     </p>
-    <div id="scheduleEditContainer"><div class="day-section ">
-      <h4 style="color:#dc2626">
-        📅 Jadwal Hari SENIN
-        
-        <span style="font-weight:normal; color:#6b7280; font-size:11px; margin-left:auto;">10 jam</span>
-      </h4>
-      <p style="font-size:11px; color:#6b7280; margin-bottom:6px;">Jadwal hari Senin</p>
-      <table class="schedule-edit" data-key="senin">
-        <thead><tr>
-          <th style="width:35px">No</th>
-          <th style="width:70px">Jam Ke-</th>
-          <th>Mulai</th>
-          <th>Selesai</th>
-          <th style="width:60px">Aksi</th>
-        </tr></thead><tbody><tr class="">
-        <td>1</td>
-        <td><input type="number" min="1" max="99" value="1" onchange="updateScheduleField('senin',0,'hour',this.value)"></td>
-        <td><input type="time" value="07:00" onchange="updateScheduleField('senin',0,'start',this.value)"></td>
-        <td><input type="time" value="07:45" onchange="updateScheduleField('senin',0,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',0)">🗑</button></td>
-      </tr><tr class="">
-        <td>2</td>
-        <td><input type="number" min="1" max="99" value="2" onchange="updateScheduleField('senin',1,'hour',this.value)"></td>
-        <td><input type="time" value="07:45" onchange="updateScheduleField('senin',1,'start',this.value)"></td>
-        <td><input type="time" value="08:30" onchange="updateScheduleField('senin',1,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',1)">🗑</button></td>
-      </tr><tr class="">
-        <td>3</td>
-        <td><input type="number" min="1" max="99" value="3" onchange="updateScheduleField('senin',2,'hour',this.value)"></td>
-        <td><input type="time" value="08:30" onchange="updateScheduleField('senin',2,'start',this.value)"></td>
-        <td><input type="time" value="09:30" onchange="updateScheduleField('senin',2,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',2)">🗑</button></td>
-      </tr><tr class="">
-        <td>4</td>
-        <td><input type="number" min="1" max="99" value="4" onchange="updateScheduleField('senin',3,'hour',this.value)"></td>
-        <td><input type="time" value="09:30" onchange="updateScheduleField('senin',3,'start',this.value)"></td>
-        <td><input type="time" value="10:15" onchange="updateScheduleField('senin',3,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',3)">🗑</button></td>
-      </tr><tr class="">
-        <td>5</td>
-        <td><input type="number" min="1" max="99" value="5" onchange="updateScheduleField('senin',4,'hour',this.value)"></td>
-        <td><input type="time" value="10:15" onchange="updateScheduleField('senin',4,'start',this.value)"></td>
-        <td><input type="time" value="11:00" onchange="updateScheduleField('senin',4,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',4)">🗑</button></td>
-      </tr><tr class="">
-        <td>6</td>
-        <td><input type="number" min="1" max="99" value="6" onchange="updateScheduleField('senin',5,'hour',this.value)"></td>
-        <td><input type="time" value="11:00" onchange="updateScheduleField('senin',5,'start',this.value)"></td>
-        <td><input type="time" value="11:45" onchange="updateScheduleField('senin',5,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',5)">🗑</button></td>
-      </tr><tr class="">
-        <td>7</td>
-        <td><input type="number" min="1" max="99" value="7" onchange="updateScheduleField('senin',6,'hour',this.value)"></td>
-        <td><input type="time" value="11:45" onchange="updateScheduleField('senin',6,'start',this.value)"></td>
-        <td><input type="time" value="12:55" onchange="updateScheduleField('senin',6,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',6)">🗑</button></td>
-      </tr><tr class="">
-        <td>8</td>
-        <td><input type="number" min="1" max="99" value="8" onchange="updateScheduleField('senin',7,'hour',this.value)"></td>
-        <td><input type="time" value="12:55" onchange="updateScheduleField('senin',7,'start',this.value)"></td>
-        <td><input type="time" value="13:40" onchange="updateScheduleField('senin',7,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',7)">🗑</button></td>
-      </tr><tr class="">
-        <td>9</td>
-        <td><input type="number" min="1" max="99" value="9" onchange="updateScheduleField('senin',8,'hour',this.value)"></td>
-        <td><input type="time" value="13:40" onchange="updateScheduleField('senin',8,'start',this.value)"></td>
-        <td><input type="time" value="14:25" onchange="updateScheduleField('senin',8,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',8)">🗑</button></td>
-      </tr><tr class="">
-        <td>10</td>
-        <td><input type="number" min="1" max="99" value="10" onchange="updateScheduleField('senin',9,'hour',this.value)"></td>
-        <td><input type="time" value="14:25" onchange="updateScheduleField('senin',9,'start',this.value)"></td>
-        <td><input type="time" value="15:10" onchange="updateScheduleField('senin',9,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('senin',9)">🗑</button></td>
-      </tr></tbody></table>
-      <div class="schedule-actions">
-        <button class="btn-blue" onclick="addScheduleRow('senin')">➕ Tambah</button>
-        <button class="btn-orange" onclick="resetScheduleDay('senin')">🔄 Reset</button>
-        <button class="btn-gray" onclick="sortScheduleDay('senin')">↕️ Urutkan</button>
-      </div>
-    </div><div class="day-section today">
-      <h4 style="color:#2a5298">
-        📅 Jadwal Hari SELASA - KAMIS
-        <span class="today-tag">HARI INI</span>
-        <span style="font-weight:normal; color:#6b7280; font-size:11px; margin-left:auto;">11 jam</span>
-      </h4>
-      <p style="font-size:11px; color:#6b7280; margin-bottom:6px;">Jadwal Selasa, Rabu, Kamis (dan akhir pekan)</p>
-      <table class="schedule-edit" data-key="selasa_kamis">
-        <thead><tr>
-          <th style="width:35px">No</th>
-          <th style="width:70px">Jam Ke-</th>
-          <th>Mulai</th>
-          <th>Selesai</th>
-          <th style="width:60px">Aksi</th>
-        </tr></thead><tbody><tr class="">
-        <td>1</td>
-        <td><input type="number" min="1" max="99" value="1" onchange="updateScheduleField('selasa_kamis',0,'hour',this.value)"></td>
-        <td><input type="time" value="07:00" onchange="updateScheduleField('selasa_kamis',0,'start',this.value)"></td>
-        <td><input type="time" value="07:45" onchange="updateScheduleField('selasa_kamis',0,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',0)">🗑</button></td>
-      </tr><tr class="">
-        <td>2</td>
-        <td><input type="number" min="1" max="99" value="2" onchange="updateScheduleField('selasa_kamis',1,'hour',this.value)"></td>
-        <td><input type="time" value="07:45" onchange="updateScheduleField('selasa_kamis',1,'start',this.value)"></td>
-        <td><input type="time" value="08:30" onchange="updateScheduleField('selasa_kamis',1,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',1)">🗑</button></td>
-      </tr><tr class="">
-        <td>3</td>
-        <td><input type="number" min="1" max="99" value="3" onchange="updateScheduleField('selasa_kamis',2,'hour',this.value)"></td>
-        <td><input type="time" value="08:30" onchange="updateScheduleField('selasa_kamis',2,'start',this.value)"></td>
-        <td><input type="time" value="09:30" onchange="updateScheduleField('selasa_kamis',2,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',2)">🗑</button></td>
-      </tr><tr class="">
-        <td>4</td>
-        <td><input type="number" min="1" max="99" value="4" onchange="updateScheduleField('selasa_kamis',3,'hour',this.value)"></td>
-        <td><input type="time" value="09:30" onchange="updateScheduleField('selasa_kamis',3,'start',this.value)"></td>
-        <td><input type="time" value="10:15" onchange="updateScheduleField('selasa_kamis',3,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',3)">🗑</button></td>
-      </tr><tr class="">
-        <td>5</td>
-        <td><input type="number" min="1" max="99" value="5" onchange="updateScheduleField('selasa_kamis',4,'hour',this.value)"></td>
-        <td><input type="time" value="10:15" onchange="updateScheduleField('selasa_kamis',4,'start',this.value)"></td>
-        <td><input type="time" value="11:00" onchange="updateScheduleField('selasa_kamis',4,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',4)">🗑</button></td>
-      </tr><tr class="">
-        <td>6</td>
-        <td><input type="number" min="1" max="99" value="6" onchange="updateScheduleField('selasa_kamis',5,'hour',this.value)"></td>
-        <td><input type="time" value="11:00" onchange="updateScheduleField('selasa_kamis',5,'start',this.value)"></td>
-        <td><input type="time" value="12:10" onchange="updateScheduleField('selasa_kamis',5,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',5)">🗑</button></td>
-      </tr><tr class="">
-        <td>7</td>
-        <td><input type="number" min="1" max="99" value="7" onchange="updateScheduleField('selasa_kamis',6,'hour',this.value)"></td>
-        <td><input type="time" value="12:10" onchange="updateScheduleField('selasa_kamis',6,'start',this.value)"></td>
-        <td><input type="time" value="12:50" onchange="updateScheduleField('selasa_kamis',6,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',6)">🗑</button></td>
-      </tr><tr class="">
-        <td>8</td>
-        <td><input type="number" min="1" max="99" value="8" onchange="updateScheduleField('selasa_kamis',7,'hour',this.value)"></td>
-        <td><input type="time" value="12:50" onchange="updateScheduleField('selasa_kamis',7,'start',this.value)"></td>
-        <td><input type="time" value="13:30" onchange="updateScheduleField('selasa_kamis',7,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',7)">🗑</button></td>
-      </tr><tr class="">
-        <td>9</td>
-        <td><input type="number" min="1" max="99" value="9" onchange="updateScheduleField('selasa_kamis',8,'hour',this.value)"></td>
-        <td><input type="time" value="13:30" onchange="updateScheduleField('selasa_kamis',8,'start',this.value)"></td>
-        <td><input type="time" value="14:10" onchange="updateScheduleField('selasa_kamis',8,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',8)">🗑</button></td>
-      </tr><tr class="">
-        <td>10</td>
-        <td><input type="number" min="1" max="99" value="10" onchange="updateScheduleField('selasa_kamis',9,'hour',this.value)"></td>
-        <td><input type="time" value="14:10" onchange="updateScheduleField('selasa_kamis',9,'start',this.value)"></td>
-        <td><input type="time" value="14:50" onchange="updateScheduleField('selasa_kamis',9,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',9)">🗑</button></td>
-      </tr><tr class="current-row">
-        <td>11</td>
-        <td><input type="number" min="1" max="99" value="11" onchange="updateScheduleField('selasa_kamis',10,'hour',this.value)"></td>
-        <td><input type="time" value="14:50" onchange="updateScheduleField('selasa_kamis',10,'start',this.value)"></td>
-        <td><input type="time" value="15:30" onchange="updateScheduleField('selasa_kamis',10,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('selasa_kamis',10)">🗑</button></td>
-      </tr></tbody></table>
-      <div class="schedule-actions">
-        <button class="btn-blue" onclick="addScheduleRow('selasa_kamis')">➕ Tambah</button>
-        <button class="btn-orange" onclick="resetScheduleDay('selasa_kamis')">🔄 Reset</button>
-        <button class="btn-gray" onclick="sortScheduleDay('selasa_kamis')">↕️ Urutkan</button>
-      </div>
-    </div><div class="day-section ">
-      <h4 style="color:#059669">
-        📅 Jadwal Hari JUMAT
-        
-        <span style="font-weight:normal; color:#6b7280; font-size:11px; margin-left:auto;">8 jam</span>
-      </h4>
-      <p style="font-size:11px; color:#6b7280; margin-bottom:6px;">Jadwal hari Jumat</p>
-      <table class="schedule-edit" data-key="jumat">
-        <thead><tr>
-          <th style="width:35px">No</th>
-          <th style="width:70px">Jam Ke-</th>
-          <th>Mulai</th>
-          <th>Selesai</th>
-          <th style="width:60px">Aksi</th>
-        </tr></thead><tbody><tr class="">
-        <td>1</td>
-        <td><input type="number" min="1" max="99" value="1" onchange="updateScheduleField('jumat',0,'hour',this.value)"></td>
-        <td><input type="time" value="07:00" onchange="updateScheduleField('jumat',0,'start',this.value)"></td>
-        <td><input type="time" value="07:45" onchange="updateScheduleField('jumat',0,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',0)">🗑</button></td>
-      </tr><tr class="">
-        <td>2</td>
-        <td><input type="number" min="1" max="99" value="2" onchange="updateScheduleField('jumat',1,'hour',this.value)"></td>
-        <td><input type="time" value="07:45" onchange="updateScheduleField('jumat',1,'start',this.value)"></td>
-        <td><input type="time" value="08:30" onchange="updateScheduleField('jumat',1,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',1)">🗑</button></td>
-      </tr><tr class="">
-        <td>3</td>
-        <td><input type="number" min="1" max="99" value="3" onchange="updateScheduleField('jumat',2,'hour',this.value)"></td>
-        <td><input type="time" value="08:30" onchange="updateScheduleField('jumat',2,'start',this.value)"></td>
-        <td><input type="time" value="09:30" onchange="updateScheduleField('jumat',2,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',2)">🗑</button></td>
-      </tr><tr class="">
-        <td>4</td>
-        <td><input type="number" min="1" max="99" value="4" onchange="updateScheduleField('jumat',3,'hour',this.value)"></td>
-        <td><input type="time" value="09:30" onchange="updateScheduleField('jumat',3,'start',this.value)"></td>
-        <td><input type="time" value="10:15" onchange="updateScheduleField('jumat',3,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',3)">🗑</button></td>
-      </tr><tr class="">
-        <td>5</td>
-        <td><input type="number" min="1" max="99" value="5" onchange="updateScheduleField('jumat',4,'hour',this.value)"></td>
-        <td><input type="time" value="10:15" onchange="updateScheduleField('jumat',4,'start',this.value)"></td>
-        <td><input type="time" value="11:00" onchange="updateScheduleField('jumat',4,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',4)">🗑</button></td>
-      </tr><tr class="">
-        <td>6</td>
-        <td><input type="number" min="1" max="99" value="6" onchange="updateScheduleField('jumat',5,'hour',this.value)"></td>
-        <td><input type="time" value="11:00" onchange="updateScheduleField('jumat',5,'start',this.value)"></td>
-        <td><input type="time" value="11:45" onchange="updateScheduleField('jumat',5,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',5)">🗑</button></td>
-      </tr><tr class="">
-        <td>7</td>
-        <td><input type="number" min="1" max="99" value="7" onchange="updateScheduleField('jumat',6,'hour',this.value)"></td>
-        <td><input type="time" value="12:30" onchange="updateScheduleField('jumat',6,'start',this.value)"></td>
-        <td><input type="time" value="13:15" onchange="updateScheduleField('jumat',6,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',6)">🗑</button></td>
-      </tr><tr class="">
-        <td>8</td>
-        <td><input type="number" min="1" max="99" value="8" onchange="updateScheduleField('jumat',7,'hour',this.value)"></td>
-        <td><input type="time" value="13:15" onchange="updateScheduleField('jumat',7,'start',this.value)"></td>
-        <td><input type="time" value="14:00" onchange="updateScheduleField('jumat',7,'end',this.value)"></td>
-        <td><button class="btn-del" onclick="removeScheduleRow('jumat',7)">🗑</button></td>
-      </tr></tbody></table>
-      <div class="schedule-actions">
-        <button class="btn-blue" onclick="addScheduleRow('jumat')">➕ Tambah</button>
-        <button class="btn-orange" onclick="resetScheduleDay('jumat')">🔄 Reset</button>
-        <button class="btn-gray" onclick="sortScheduleDay('jumat')">↕️ Urutkan</button>
-      </div>
-    </div></div>
+    <div id="subjectListContainer"></div>
+    <div class="subject-add">
+      <input type="text" id="newSubjectInput" placeholder="Nama mata pelajaran baru..." maxlength="40">
+      <button class="btn-green" onclick="addSubject()">➕ Tambah</button>
+    </div>
+    <div class="form-hint">💡 Minimal 1 mata pelajaran harus ada. Mapel yang sedang dipakai kelas tidak bisa dihapus.</div>
 
-    <div class="section-title">💾 Bagikan Aplikasi (Download HTML)</div>
+    <div class="section-title">🖨️ Pengaturan Cetak</div>
+    <div class="print-settings">
+      <div class="form-group">
+        <label>Ukuran Kertas</label>
+        <select id="setPaperSize">
+          <option value="A4">A4 (210 × 297 mm)</option>
+          <option value="F4">F4 / Folio (215 × 330 mm)</option>
+          <option value="Letter">Letter (216 × 279 mm)</option>
+          <option value="Legal">Legal US (216 × 356 mm)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Orientasi</label>
+        <div class="radio-group">
+          <label><input type="radio" name="setOrientation" value="portrait" checked> 📄 Portrait</label>
+          <label><input type="radio" name="setOrientation" value="landscape"> 📐 Landscape</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-hint">💡 Default: A4 Portrait. F4/Folio adalah ukuran kertas umum di Indonesia.</div>
+
+    <div class="section-title">🕐 Jadwal Pelajaran per Hari</div>
+    <p style="font-size:11px; color:#666; margin-bottom:8px;">
+      Edit jadwal untuk 3 kategori hari. Section <b style="background:#10b981;color:#fff;padding:1px 6px;border-radius:8px;font-size:10px;">HARI INI</b> adalah jadwal aktif.
+    </p>
+    <div id="scheduleEditContainer"></div>
+
+    <div class="section-title">💾 Bagikan Aplikasi</div>
     <div class="share-box">
       <h4>📤 Download HTML dengan Semua Data</h4>
-      <p>Tombol di bawah akan mengunduh file HTML baru yang sudah berisi <b>SEMUA perubahan</b> yang Anda buat. File ini bisa dibagikan ke guru lain dan langsung bisa dipakai tanpa setup ulang.</p>
+      <p>Unduh file HTML baru berisi SEMUA perubahan. File bisa dibagikan dan langsung dipakai.</p>
       <ul>
-        <li>✅ Nama sekolah, alamat, tahun ajaran</li>
-        <li>✅ Nama guru, mata pelajaran, NIP</li>
+        <li>✅ Identitas sekolah, guru, tahun ajaran</li>
+        <li>✅ Daftar mata pelajaran + mapel per kelas</li>
         <li>✅ Jadwal pelajaran (Senin / Selasa-Kamis / Jumat)</li>
-        <li>✅ Nama 15 kelas (X DKV 1, dst.)</li>
-        <li>✅ Data siswa, absensi, materi pertemuan</li>
+        <li>✅ Nama kelas, data siswa, absensi, materi</li>
+        <li>✅ Pengaturan cetak (kertas & orientasi)</li>
       </ul>
       <div class="share-actions">
-        <button class="btn-purple" onclick="downloadHTML()">💾 Download HTML Sekarang</button>
+        <button class="btn-purple" onclick="downloadHTML()">💾 Download HTML</button>
         <button class="btn-gray" onclick="clearEmbeddedData()">🗑 Hapus Data Ter-Embed</button>
       </div>
-      <p style="margin-top:8px; font-size:10px; color:#6b21a8;">💡 Setelah download, buka file HTML baru tersebut — tampilan awal akan langsung mengikuti data terbaru Anda.</p>
     </div>
 
     <div class="modal-actions">
@@ -472,11 +279,9 @@
 <!-- Modal Konfirmasi -->
 <div class="modal-bg" id="modal">
   <div class="modal">
-    <h3 id="modalTitle">🧹 Reset Data Siswa, Absensi &amp; Materi</h3>
-    <p id="modalMsg">Semua DATA SISWA, ABSENSI, MATERI akan DIHAPUS.
-
-Identitas sekolah, guru, jadwal, dan nama kelas TETAP tersimpan.</p>
-    <div class="keep-note" id="modalNote" style="display: block;">✅ Identitas sekolah, guru, jadwal, dan nama kelas TIDAK dihapus.</div>
+    <h3 id="modalTitle">Konfirmasi</h3>
+    <p id="modalMsg"></p>
+    <div class="keep-note" id="modalNote" style="display:none"></div>
     <div class="modal-actions">
       <button onclick="closeModal()">Batal</button>
       <button class="btn-red" id="modalOk">Ya, Lanjutkan</button>
@@ -484,55 +289,46 @@ Identitas sekolah, guru, jadwal, dan nama kelas TETAP tersimpan.</p>
   </div>
 </div>
 
-<div class="toast" id="toast" style="background: rgb(16, 185, 129);">✅ Semua pengaturan disimpan</div>
+<div class="toast" id="toast"></div>
 
 <script>
 /* ===== KONFIGURASI ===== */
 const TOTAL_CLASSES = 15;
 const MAX_MEETINGS = 50;
-const STORAGE_KEY = 'absensiSiswa_v11';
+const STORAGE_KEY = 'absensiSiswa_v12';
 const STATUS_CYCLE = ['H', 'S', 'I', 'A'];
+const DEFAULT_SUBJECTS = ['Informatika', 'PAI', 'PKK'];
+const PAPER_SIZES = {
+  'A4': { w: 210, h: 297, label: 'A4' },
+  'F4': { w: 215, h: 330, label: 'F4/Folio' },
+  'Letter': { w: 216, h: 279, label: 'Letter' },
+  'Legal': { w: 216, h: 356, label: 'Legal US' }
+};
 
 /* ===== JADWAL DEFAULT ===== */
 const DEFAULT_SCHEDULE_SENIN = [
-  { hour: 1,  start: '07:00', end: '07:45' },
-  { hour: 2,  start: '07:45', end: '08:30' },
-  { hour: 3,  start: '08:30', end: '09:15' },
-  { hour: 4,  start: '09:15', end: '10:00' },
-  { hour: 5,  start: '10:00', end: '10:45' },
-  { hour: 6,  start: '10:45', end: '11:30' },
-  { hour: 7,  start: '11:30', end: '12:15' },
-  { hour: 8,  start: '12:15', end: '13:00' },
-  { hour: 9,  start: '13:00', end: '13:45' },
-  { hour: 10, start: '13:45', end: '14:30' },
+  { hour: 1, start: '07:00', end: '07:45' }, { hour: 2, start: '07:45', end: '08:30' },
+  { hour: 3, start: '08:30', end: '09:15' }, { hour: 4, start: '09:15', end: '10:00' },
+  { hour: 5, start: '10:00', end: '10:45' }, { hour: 6, start: '10:45', end: '11:30' },
+  { hour: 7, start: '11:30', end: '12:15' }, { hour: 8, start: '12:15', end: '13:00' },
+  { hour: 9, start: '13:00', end: '13:45' }, { hour: 10, start: '13:45', end: '14:30' },
   { hour: 11, start: '14:30', end: '15:15' }
 ];
 const DEFAULT_SCHEDULE_SELASA_KAMIS = [
-  { hour: 1,  start: '07:00', end: '07:45' },
-  { hour: 2,  start: '07:45', end: '08:30' },
-  { hour: 3,  start: '08:30', end: '09:30' },
-  { hour: 4,  start: '09:30', end: '10:15' },
-  { hour: 5,  start: '10:15', end: '11:00' },
-  { hour: 6,  start: '11:00', end: '12:10' },
-  { hour: 7,  start: '12:10', end: '12:50' },
-  { hour: 8,  start: '12:50', end: '13:30' },
-  { hour: 9,  start: '13:30', end: '14:10' },
-  { hour: 10, start: '14:10', end: '14:50' },
-  { hour: 11, start: '14:50', end: '15:30' },
-  { hour: 12, start: '15:30', end: '16:10' },
+  { hour: 1, start: '07:00', end: '07:45' }, { hour: 2, start: '07:45', end: '08:30' },
+  { hour: 3, start: '08:30', end: '09:30' }, { hour: 4, start: '09:30', end: '10:15' },
+  { hour: 5, start: '10:15', end: '11:00' }, { hour: 6, start: '11:00', end: '12:10' },
+  { hour: 7, start: '12:10', end: '12:50' }, { hour: 8, start: '12:50', end: '13:30' },
+  { hour: 9, start: '13:30', end: '14:10' }, { hour: 10, start: '14:10', end: '14:50' },
+  { hour: 11, start: '14:50', end: '15:30' }, { hour: 12, start: '15:30', end: '16:10' },
   { hour: 13, start: '16:10', end: '17:00' }
 ];
 const DEFAULT_SCHEDULE_JUMAT = [
-  { hour: 1,  start: '07:00', end: '07:40' },
-  { hour: 2,  start: '07:40', end: '08:20' },
-  { hour: 3,  start: '08:20', end: '09:00' },
-  { hour: 4,  start: '09:00', end: '09:40' },
-  { hour: 5,  start: '09:40', end: '10:20' },
-  { hour: 6,  start: '10:20', end: '11:00' },
-  { hour: 7,  start: '11:00', end: '11:40' },
-  { hour: 8,  start: '11:40', end: '12:20' },
-  { hour: 9,  start: '12:20', end: '13:00' },
-  { hour: 10, start: '13:00', end: '13:40' },
+  { hour: 1, start: '07:00', end: '07:40' }, { hour: 2, start: '07:40', end: '08:20' },
+  { hour: 3, start: '08:20', end: '09:00' }, { hour: 4, start: '09:00', end: '09:40' },
+  { hour: 5, start: '09:40', end: '10:20' }, { hour: 6, start: '10:20', end: '11:00' },
+  { hour: 7, start: '11:00', end: '11:40' }, { hour: 8, start: '11:40', end: '12:20' },
+  { hour: 9, start: '12:20', end: '13:00' }, { hour: 10, start: '13:00', end: '13:40' },
   { hour: 11, start: '13:40', end: '14:20' }
 ];
 
@@ -542,14 +338,14 @@ let currentClass = 0;
 let currentMeeting = 1;
 let clockInterval = null;
 let tempSchedule = { senin: [], selasa_kamis: [], jumat: [] };
+let tempSubjects = [];
 
 function defaultState() {
   const classes = [];
   for (let i = 1; i <= TOTAL_CLASSES; i++) {
     classes.push({
-      id: i, name: `Kelas ${i}`,
-      students: [], attendance: {},
-      meetings: 0, meetingsData: {}
+      id: i, name: `Kelas ${i}`, subject: DEFAULT_SUBJECTS[0],
+      students: [], attendance: {}, meetings: 0, meetingsData: {}
     });
   }
   return {
@@ -557,8 +353,9 @@ function defaultState() {
     schoolAddress: '',
     academicYear: '2026/2027',
     teacherName: '',
-    subject: '',
     nip: '',
+    subjects: [...DEFAULT_SUBJECTS],
+    printSettings: { paperSize: 'A4', orientation: 'portrait' },
     schedule: {
       senin: JSON.parse(JSON.stringify(DEFAULT_SCHEDULE_SENIN)),
       selasa_kamis: JSON.parse(JSON.stringify(DEFAULT_SCHEDULE_SELASA_KAMIS)),
@@ -568,7 +365,6 @@ function defaultState() {
   };
 }
 
-/* ===== BACA DATA TER-EMBED DI HTML ===== */
 function getEmbeddedState() {
   try {
     const el = document.getElementById('embedded-data');
@@ -580,32 +376,43 @@ function getEmbeddedState() {
 }
 
 function loadState() {
-  // PRIORITAS 1: data ter-embed di HTML (saat file baru dibuka)
   const embedded = getEmbeddedState();
   if (embedded && embedded.classes) {
-    // Simpan ke localStorage agar perubahan berikutnya tersimpan lokal
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(embedded)); } catch(e) {}
     return migrateState(embedded);
   }
-
-  // PRIORITAS 2: localStorage
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const legacy = !raw ? (localStorage.getItem('absensiSiswa_v10') || localStorage.getItem('absensiSiswa_v9') || localStorage.getItem('absensiSiswa_v8') || localStorage.getItem('absensiSiswa_v7') || localStorage.getItem('absensiSiswa_v6') || localStorage.getItem('absensiSiswa_v5')) : raw;
+    const legacy = !raw ? (localStorage.getItem('absensiSiswa_v11') || localStorage.getItem('absensiSiswa_v10') || localStorage.getItem('absensiSiswa_v9') || localStorage.getItem('absensiSiswa_v8') || localStorage.getItem('absensiSiswa_v7') || localStorage.getItem('absensiSiswa_v6') || localStorage.getItem('absensiSiswa_v5')) : raw;
     if (legacy) return migrateState(JSON.parse(legacy));
   } catch(e) {}
-
   return defaultState();
 }
 
 function migrateState(s) {
   if (!s || !s.classes) return defaultState();
   if (!s.schoolName) s.schoolName = 'SMKN 1 GONDANG';
-  if (!s.schoolAddress) s.schoolAddress = '';
+  if (s.schoolAddress === undefined) s.schoolAddress = '';
   if (!s.academicYear) s.academicYear = '2026/2027';
   if (!s.teacherName) s.teacherName = '';
-  if (!s.subject) s.subject = '';
   if (!s.nip) s.nip = '';
+
+  // Migration subjects (dari string tunggal ke array)
+  if (!Array.isArray(s.subjects)) {
+    const oldSubject = s.subject || 'Informatika';
+    s.subjects = [oldSubject];
+    delete s.subject;
+  }
+  if (s.subjects.length === 0) s.subjects = [...DEFAULT_SUBJECTS];
+
+  // Migration printSettings
+  if (!s.printSettings || typeof s.printSettings !== 'object') {
+    s.printSettings = { paperSize: 'A4', orientation: 'portrait' };
+  }
+  if (!PAPER_SIZES[s.printSettings.paperSize]) s.printSettings.paperSize = 'A4';
+  if (!['portrait', 'landscape'].includes(s.printSettings.orientation)) s.printSettings.orientation = 'portrait';
+
+  // Migration schedule
   if (!s.schedule || typeof s.schedule !== 'object' || Array.isArray(s.schedule)) {
     const oldArr = Array.isArray(s.schedule) ? s.schedule : DEFAULT_SCHEDULE_SELASA_KAMIS;
     s.schedule = {
@@ -618,15 +425,21 @@ function migrateState(s) {
     if (!Array.isArray(s.schedule.selasa_kamis)) s.schedule.selasa_kamis = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE_SELASA_KAMIS));
     if (!Array.isArray(s.schedule.jumat)) s.schedule.jumat = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE_JUMAT));
   }
+
+  // Migration classes
   while (s.classes.length < TOTAL_CLASSES) {
     const n = s.classes.length + 1;
-    s.classes.push({ id: n, name: `Kelas ${n}`, students: [], attendance: {}, meetings: 0, meetingsData: {} });
+    s.classes.push({ id: n, name: `Kelas ${n}`, subject: s.subjects[0], students: [], attendance: {}, meetings: 0, meetingsData: {} });
   }
   s.classes.forEach(c => {
     if (!c.students) c.students = [];
     if (!c.attendance) c.attendance = {};
     if (!c.meetingsData) c.meetingsData = {};
     c.meetings = Math.min(MAX_MEETINGS, Number(c.meetings) || 0);
+    // Assign subject ke kelas (jika belum ada atau tidak valid)
+    if (!c.subject || !s.subjects.includes(c.subject)) {
+      c.subject = s.subjects[0];
+    }
   });
   return s;
 }
@@ -716,8 +529,8 @@ function renderHeader() {
   document.getElementById('headerSchool').textContent = '📚 ' + state.schoolName;
   document.getElementById('headerTA').textContent = 'TA ' + state.academicYear;
   const teacher = state.teacherName || '-';
-  const subject = state.subject || '-';
-  document.getElementById('headerTeacher').textContent = `👨‍🏫 Guru: ${teacher} | Mapel: ${subject}`;
+  const subject = state.classes[currentClass].subject || '-';
+  document.getElementById('headerTeacher').textContent = `👨‍🏫 Guru: ${teacher} | 📖 Mapel: ${subject}`;
 }
 
 /* ===== RENDER ===== */
@@ -737,6 +550,30 @@ function renderClassSelect() {
     render();
   };
 }
+
+function renderSubjectSelect() {
+  const sel = document.getElementById('subjectSelect');
+  sel.innerHTML = '';
+  state.subjects.forEach(subj => {
+    const opt = document.createElement('option');
+    opt.value = subj;
+    opt.textContent = subj;
+    sel.appendChild(opt);
+  });
+  sel.value = state.classes[currentClass].subject;
+}
+
+function changeClassSubject(newSubject) {
+  if (!state.subjects.includes(newSubject)) {
+    toast('Mata pelajaran tidak valid!', 'error');
+    return;
+  }
+  state.classes[currentClass].subject = newSubject;
+  saveState();
+  renderHeader();
+  toast(`📖 Mapel kelas ${state.classes[currentClass].name} → ${newSubject}`);
+}
+
 function renderInfo() {
   const c = state.classes[currentClass];
   const bar = document.getElementById('infoBar');
@@ -758,6 +595,7 @@ function renderInfo() {
     <span class="status-A">A Alfa: <b>${a}</b></span>
     <span>📅 Pertemuan: <b>${currentMeeting}/${c.meetings}</b></span>`;
 }
+
 function renderMeetingForm() {
   const c = state.classes[currentClass];
   const form = document.getElementById('meetingForm');
@@ -776,15 +614,14 @@ function renderMeetingForm() {
   const catLabel = getDayCategoryLabel(cat);
   const info = getCurrentHourInfo();
   const statusText = info.status === 'active' ? '🟢 Sedang berlangsung'
-                   : info.status === 'before' ? '⏳ Belum mulai'
-                   : '✅ Sudah selesai';
+                   : info.status === 'before' ? '⏳ Belum mulai' : '✅ Sudah selesai';
   let opts = '';
   schedForDate.forEach(s => {
     const selected = d.hour == s.hour ? 'selected' : '';
     opts += `<option value="${s.hour}" ${selected}>Jam Ke-${s.hour} (${s.start} - ${s.end})</option>`;
   });
   form.innerHTML = `
-    <h3>📝 Pertemuan ${currentMeeting}</h3>
+    <h3>📝 Pertemuan ${currentMeeting} • ${esc(c.subject)}</h3>
     <div class="clock-info">
       <span>🕐 Waktu sekarang: <b>${formatClock()}</b></span>
       <span class="auto-badge">Auto: Jam Ke-${info.hour}</span>
@@ -795,7 +632,7 @@ function renderMeetingForm() {
       <div><label>Tanggal Pertemuan</label>
         <input type="date" id="meetingDate" value="${esc(meetingDate)}" onchange="onDateChange()"></div>
       <div>
-        <label>Jam Pelajaran <span style="font-weight:normal; color:#888;">(jadwal ${catLabel})</span></label>
+        <label>Jam Pelajaran <span style="font-weight:normal; color:#888;">(${catLabel})</span></label>
         <select id="meetingHour" onchange="updateMeetingData()">${opts}</select>
       </div>
     </div>
@@ -804,9 +641,10 @@ function renderMeetingForm() {
         <textarea id="meetingMaterial" placeholder="Tuliskan materi..." onchange="updateMeetingData()">${esc(d.material)}</textarea></div>
     </div>
     <div style="font-size:11px; color:#6b7280; margin-top:4px;">
-      📅 Hari: <b>${dayName}</b> → Jadwal <b>${catLabel}</b> (${schedForDate.length} jam pelajaran)
+      📅 Hari: <b>${dayName}</b> • 📖 Mapel: <b>${esc(c.subject)}</b> • 🏫 Kelas: <b>${esc(c.name)}</b>
     </div>`;
 }
+
 function onDateChange() {
   const newDate = document.getElementById('meetingDate').value;
   const c = state.classes[currentClass];
@@ -831,6 +669,7 @@ function onDateChange() {
   renderMeetingForm();
   toast(`📅 Jadwal diperbarui untuk hari ${DAY_NAMES[new Date(newDate).getDay()]}`);
 }
+
 function autoDetectHour() {
   const c = state.classes[currentClass];
   if (c.meetings === 0) return;
@@ -841,6 +680,7 @@ function autoDetectHour() {
   renderMeetingForm();
   toast(`✅ Jam terdeteksi: Jam Ke-${detected}`);
 }
+
 function updateMeetingData() {
   const c = state.classes[currentClass];
   if (c.meetings === 0) return;
@@ -851,6 +691,7 @@ function updateMeetingData() {
   saveState();
   toast('✅ Materi & jadwal tersimpan');
 }
+
 function renderTable() {
   const wrap = document.getElementById('tableWrap');
   const c = state.classes[currentClass];
@@ -879,15 +720,119 @@ function renderTable() {
   });
   wrap.innerHTML = html + '</tbody></table>';
 }
+
 function render() {
   const c = state.classes[currentClass];
   if (currentMeeting > c.meetings) currentMeeting = Math.max(1, c.meetings);
   renderHeader();
   renderClassSelect();
+  renderSubjectSelect();
   renderInfo();
   renderMeetingForm();
   renderTable();
   saveState();
+}
+
+/* ===== CRUD MATA PELAJARAN ===== */
+function renderSubjectList() {
+  const container = document.getElementById('subjectListContainer');
+  if (tempSubjects.length === 0) {
+    container.innerHTML = '<div class="subject-empty">Belum ada mata pelajaran. Tambahkan di bawah.</div>';
+    return;
+  }
+  let html = '<div class="subject-list">';
+  tempSubjects.forEach((subj, idx) => {
+    // Cek apakah mapel ini dipakai oleh kelas manapun
+    const usedBy = state.classes.filter(c => c.subject === subj).map(c => c.name);
+    const canDelete = usedBy.length === 0;
+    html += `<div class="subject-item" id="subj-item-${idx}">
+      <span class="subj-name" id="subj-name-${idx}">${esc(subj)}</span>
+      <div class="subj-actions">
+        <button class="btn-blue" onclick="startEditSubject(${idx})">✏️ Edit</button>
+        <button class="btn-red" onclick="removeSubject(${idx})" ${!canDelete ? 'disabled style="opacity:.5;cursor:not-allowed;" title="Mapel sedang dipakai '+usedBy.length+' kelas"' : ''}>🗑</button>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function startEditSubject(idx) {
+  const item = document.getElementById(`subj-item-${idx}`);
+  const nameEl = document.getElementById(`subj-name-${idx}`);
+  const oldName = tempSubjects[idx];
+  item.classList.add('editing');
+  nameEl.outerHTML = `<input type="text" id="subj-edit-${idx}" value="${esc(oldName)}" maxlength="40">`;
+  const input = document.getElementById(`subj-edit-${idx}`);
+  input.focus();
+  input.select();
+  // Ganti tombol Edit jadi Save & Cancel
+  const actionsEl = item.querySelector('.subj-actions');
+  actionsEl.innerHTML = `
+    <button class="btn-green" onclick="saveEditSubject(${idx})">💾 Simpan</button>
+    <button class="btn-gray" onclick="cancelEditSubject(${idx})">Batal</button>
+  `;
+  input.onkeydown = e => {
+    if (e.key === 'Enter') saveEditSubject(idx);
+    if (e.key === 'Escape') cancelEditSubject(idx);
+  };
+}
+
+function saveEditSubject(idx) {
+  const input = document.getElementById(`subj-edit-${idx}`);
+  const newName = input.value.trim();
+  const oldName = tempSubjects[idx];
+  if (!newName) { toast('Nama mapel tidak boleh kosong!', 'error'); return; }
+  if (newName === oldName) { cancelEditSubject(idx); return; }
+  // Cek duplikat
+  if (tempSubjects.some((s, i) => i !== idx && s.toLowerCase() === newName.toLowerCase())) {
+    toast(`Mapel "${newName}" sudah ada!`, 'error'); return;
+  }
+  tempSubjects[idx] = newName;
+  // Update semua kelas yang pakai mapel lama
+  state.classes.forEach(c => {
+    if (c.subject === oldName) c.subject = newName;
+  });
+  renderSubjectList();
+  toast(`✅ "${oldName}" → "${newName}"`);
+}
+
+function cancelEditSubject(idx) {
+  renderSubjectList();
+}
+
+function addSubject() {
+  const input = document.getElementById('newSubjectInput');
+  const name = input.value.trim();
+  if (!name) { toast('Nama mapel tidak boleh kosong!', 'error'); return; }
+  if (name.length > 40) { toast('Maksimal 40 karakter!', 'error'); return; }
+  if (tempSubjects.some(s => s.toLowerCase() === name.toLowerCase())) {
+    toast(`Mapel "${name}" sudah ada!`, 'error'); return;
+  }
+  tempSubjects.push(name);
+  input.value = '';
+  renderSubjectList();
+  toast(`✅ Mapel "${name}" ditambahkan`);
+}
+
+function removeSubject(idx) {
+  const name = tempSubjects[idx];
+  const usedBy = state.classes.filter(c => c.subject === name);
+  if (usedBy.length > 0) {
+    toast(`❌ Mapel "${name}" sedang dipakai ${usedBy.length} kelas. Ubah mapel kelas tersebut dulu.`, 'error');
+    return;
+  }
+  if (tempSubjects.length === 1) {
+    toast('❌ Minimal 1 mata pelajaran harus ada!', 'error');
+    return;
+  }
+  showConfirm(`🗑 Hapus Mata Pelajaran`,
+    `Hapus mapel "${name}"? Tindakan ini tidak bisa dibatalkan.`,
+    () => {
+      tempSubjects.splice(idx, 1);
+      renderSubjectList();
+      toast(`✅ Mapel "${name}" dihapus`);
+    }, false);
 }
 
 /* ===== SETTINGS ===== */
@@ -897,7 +842,7 @@ function renderScheduleEditContainer() {
   const todayCat = getDayCategory(todayDow);
   const sections = [
     { key: 'senin', label: 'SENIN', desc: 'Jadwal hari Senin', color: '#dc2626' },
-    { key: 'selasa_kamis', label: 'SELASA - KAMIS', desc: 'Jadwal Selasa, Rabu, Kamis (dan akhir pekan)', color: '#2a5298' },
+    { key: 'selasa_kamis', label: 'SELASA - KAMIS', desc: 'Jadwal Selasa, Rabu, Kamis', color: '#2a5298' },
     { key: 'jumat', label: 'JUMAT', desc: 'Jadwal hari Jumat', color: '#059669' }
   ];
   let html = '';
@@ -907,12 +852,11 @@ function renderScheduleEditContainer() {
     const info = isToday ? getCurrentHourInfo() : null;
     html += `<div class="day-section ${isToday ? 'today' : ''}">
       <h4 style="color:${sec.color}">
-        📅 Jadwal Hari ${sec.label}
+        📅 ${sec.label}
         ${isToday ? '<span class="today-tag">HARI INI</span>' : ''}
         <span style="font-weight:normal; color:#6b7280; font-size:11px; margin-left:auto;">${sched.length} jam</span>
       </h4>
-      <p style="font-size:11px; color:#6b7280; margin-bottom:6px;">${sec.desc}</p>
-      <table class="schedule-edit" data-key="${sec.key}">
+      <table class="schedule-edit">
         <thead><tr>
           <th style="width:35px">No</th>
           <th style="width:70px">Jam Ke-</th>
@@ -941,6 +885,7 @@ function renderScheduleEditContainer() {
   });
   container.innerHTML = html;
 }
+
 function updateScheduleField(key, idx, field, value) {
   if (field === 'hour') tempSchedule[key][idx].hour = Math.max(1, parseInt(value) || 1);
   else tempSchedule[key][idx][field] = value;
@@ -994,75 +939,74 @@ function validateSchedule() {
   }
   return null;
 }
+
 function openSettingsModal() {
   document.getElementById('setSchoolName').value = state.schoolName;
   document.getElementById('setSchoolAddress').value = state.schoolAddress || '';
   document.getElementById('setAcademicYear').value = state.academicYear;
   document.getElementById('setTeacherName').value = state.teacherName || '';
-  document.getElementById('setSubject').value = state.subject || '';
   document.getElementById('setNip').value = state.nip || '';
+  document.getElementById('setPaperSize').value = state.printSettings.paperSize;
+  document.querySelectorAll('input[name="setOrientation"]').forEach(r => {
+    r.checked = (r.value === state.printSettings.orientation);
+  });
+  tempSubjects = [...state.subjects];
   tempSchedule = {
     senin: JSON.parse(JSON.stringify(state.schedule.senin)),
     selasa_kamis: JSON.parse(JSON.stringify(state.schedule.selasa_kamis)),
     jumat: JSON.parse(JSON.stringify(state.schedule.jumat))
   };
+  renderSubjectList();
   renderScheduleEditContainer();
   document.getElementById('settingsModal').classList.add('show');
   setTimeout(() => document.getElementById('setSchoolName').focus(), 80);
 }
 function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('show'); }
+
 function saveSettings() {
   const name = document.getElementById('setSchoolName').value.trim();
   const addr = document.getElementById('setSchoolAddress').value.trim();
   const ta = document.getElementById('setAcademicYear').value.trim();
   const teacher = document.getElementById('setTeacherName').value.trim();
-  const subject = document.getElementById('setSubject').value.trim();
   const nip = document.getElementById('setNip').value.trim();
+  const paperSize = document.getElementById('setPaperSize').value;
+  const orientation = document.querySelector('input[name="setOrientation"]:checked').value;
+
   if (!name) { toast('Nama sekolah tidak boleh kosong!', 'error'); return; }
   if (!ta) { toast('Tahun ajaran tidak boleh kosong!', 'error'); return; }
+  if (tempSubjects.length === 0) { toast('Minimal 1 mata pelajaran harus ada!', 'error'); return; }
   const err = validateSchedule();
   if (err) { toast('❌ ' + err, 'error'); return; }
+
   state.schoolName = name;
   state.schoolAddress = addr;
   state.academicYear = ta;
   state.teacherName = teacher;
-  state.subject = subject;
   state.nip = nip;
+  state.subjects = [...tempSubjects];
+  state.printSettings = { paperSize, orientation };
   state.schedule = {
     senin: tempSchedule.senin.slice().sort((a,b) => a.hour - b.hour),
     selasa_kamis: tempSchedule.selasa_kamis.slice().sort((a,b) => a.hour - b.hour),
     jumat: tempSchedule.jumat.slice().sort((a,b) => a.hour - b.hour)
   };
+  // Pastikan setiap kelas punya subject yang valid
+  state.classes.forEach(c => {
+    if (!state.subjects.includes(c.subject)) c.subject = state.subjects[0];
+  });
   saveState(); render(); closeSettingsModal();
   toast('✅ Semua pengaturan disimpan');
 }
 
-/* ===== DOWNLOAD HTML DENGAN DATA TER-EMBED ===== */
+/* ===== DOWNLOAD HTML ===== */
 function downloadHTML() {
   try {
-    // Clone dokumen saat ini
     const clone = document.documentElement.cloneNode(true);
-
-    // Update elemen embedded-data dengan state saat ini
     const embEl = clone.querySelector('#embedded-data');
-    if (embEl) {
-      embEl.textContent = JSON.stringify(state);
-    }
-
-    // Hapus class 'show' dari modal (agar tidak terbuka di file baru)
+    if (embEl) embEl.textContent = JSON.stringify(state);
     clone.querySelectorAll('.modal-bg.show').forEach(m => m.classList.remove('show'));
     clone.querySelectorAll('.toast.show').forEach(t => t.classList.remove('show'));
-
-    // Reset form input yang mungkin ada isinya
-    clone.querySelectorAll('input, textarea, select').forEach(el => {
-      if (el.id === 'embedded-data') return;
-      // Biarkan default value dari HTML asli
-    });
-
-    // Serialize ke string
     const htmlStr = '<!DOCTYPE html>\n' + clone.outerHTML;
-
-    // Buat Blob dan download
     const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1082,7 +1026,7 @@ function downloadHTML() {
 
 function clearEmbeddedData() {
   showConfirm('🗑 Hapus Data Ter-Embed',
-    'Hapus data yang ter-embed di HTML ini? Aplikasi akan kembali ke kondisi default saat dibuka berikutnya (data di localStorage tetap aman).',
+    'Hapus data yang ter-embed di HTML ini? Aplikasi akan kembali ke kondisi default saat dibuka berikutnya.',
     () => {
       const el = document.getElementById('embedded-data');
       if (el) el.textContent = '';
@@ -1120,18 +1064,23 @@ function resetClassName() {
 /* ===== RESET DATA ===== */
 function resetData() {
   showConfirm('🧹 Reset Data Siswa, Absensi & Materi',
-    'Semua DATA SISWA, ABSENSI, MATERI akan DIHAPUS.\n\nIdentitas sekolah, guru, jadwal, dan nama kelas TETAP tersimpan.',
+    'Semua DATA SISWA, ABSENSI, MATERI akan DIHAPUS.\n\nIdentitas sekolah, guru, mapel, jadwal, nama kelas, dan pengaturan cetak TETAP tersimpan.',
     () => {
       const savedNames = state.classes.map(c => c.name);
+      const savedSubjects = state.classes.map(c => c.subject);
       const fresh = defaultState();
       fresh.schoolName = state.schoolName;
       fresh.schoolAddress = state.schoolAddress;
       fresh.academicYear = state.academicYear;
       fresh.teacherName = state.teacherName;
-      fresh.subject = state.subject;
       fresh.nip = state.nip;
-      fresh.schedule = state.schedule;
-      fresh.classes.forEach((c, i) => { c.name = savedNames[i] || `Kelas ${i+1}`; });
+      fresh.subjects = [...state.subjects];
+      fresh.printSettings = { ...state.printSettings };
+      fresh.schedule = JSON.parse(JSON.stringify(state.schedule));
+      fresh.classes.forEach((c, i) => {
+        c.name = savedNames[i] || `Kelas ${i+1}`;
+        c.subject = savedSubjects[i] && state.subjects.includes(savedSubjects[i]) ? savedSubjects[i] : state.subjects[0];
+      });
       state = fresh;
       currentClass = 0; currentMeeting = 1;
       saveState(); render();
@@ -1141,16 +1090,17 @@ function resetData() {
 }
 function resetTotal() {
   showConfirm('🗑 Reset Total (Termasuk Nama Kelas)',
-    'SEMUA data dihapus, nama kelas kembali ke default.\n\nIdentitas sekolah, guru, dan jadwal TETAP tersimpan.',
+    'SEMUA data dihapus, nama kelas kembali ke default.\n\nIdentitas sekolah, guru, daftar mapel, jadwal, dan pengaturan cetak TETAP tersimpan.',
     () => {
       const fresh = defaultState();
       fresh.schoolName = state.schoolName;
       fresh.schoolAddress = state.schoolAddress;
       fresh.academicYear = state.academicYear;
       fresh.teacherName = state.teacherName;
-      fresh.subject = state.subject;
       fresh.nip = state.nip;
-      fresh.schedule = state.schedule;
+      fresh.subjects = [...state.subjects];
+      fresh.printSettings = { ...state.printSettings };
+      fresh.schedule = JSON.parse(JSON.stringify(state.schedule));
       state = fresh;
       currentClass = 0; currentMeeting = 1;
       saveState(); render();
@@ -1186,11 +1136,7 @@ function addMeeting() {
     c.attendance[st.id][currentMeeting] = c.attendance[st.id][currentMeeting] || 'H';
   });
   const today = new Date();
-  c.meetingsData[currentMeeting] = {
-    date: today.toISOString().slice(0,10),
-    hour: detectedHour,
-    material: ''
-  };
+  c.meetingsData[currentMeeting] = { date: today.toISOString().slice(0,10), hour: detectedHour, material: '' };
   render();
   toast(`✅ Pertemuan ${currentMeeting} — ${DAY_NAMES[today.getDay()]}, Jam Ke-${detectedHour}`);
 }
@@ -1204,54 +1150,63 @@ function prevMeeting() {
 }
 
 /* ===== CETAK REKAP ===== */
+function getPrintCSS() {
+  const ps = state.printSettings;
+  const size = PAPER_SIZES[ps.paperSize] || PAPER_SIZES['A4'];
+  const orient = ps.orientation;
+  return `
+    @page { size: ${size.w}mm ${size.h}mm ${orient}; margin: ${orient === 'portrait' ? '12mm' : '10mm'}; }
+    body { font-family: Arial, sans-serif; padding: 5px; font-size: ${orient === 'portrait' ? '9px' : '10px'}; }
+    .print-page { page-break-after: always; }
+    .print-page:last-child { page-break-after: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #333; padding: ${orient === 'portrait' ? '2px 3px' : '4px 5px'}; }
+  `;
+}
+
 function buildRekapHTML(c) {
   const tgl = new Date().toLocaleDateString('id-ID', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
   const teacherName = state.teacherName || '(...........................................)';
   const nipLine = state.nip ? `NIP. ${esc(state.nip)}` : '';
+  const orient = state.printSettings.orientation;
   let html = `<div class="print-page">
-    <div style="text-align:center;margin-bottom:15px;border-bottom:3px double #333;padding-bottom:10px;">
-      <h2 style="font-size:18px;margin:0;">REKAP ABSENSI SISWA</h2>
-      <h3 style="font-size:16px;margin:4px 0;">${esc(state.schoolName)}</h3>
-      ${state.schoolAddress ? `<p style="font-size:11px;color:#555;margin:2px 0;">${esc(state.schoolAddress)}</p>` : ''}
-      <p style="font-size:12px;margin:4px 0;"><b>Tahun Ajaran: ${esc(state.academicYear)}</b></p>
-      <p style="font-size:12px;margin:2px 0;">Kelas: <b>${esc(c.name)}</b>${state.subject ? ` &nbsp;|&nbsp; Mata Pelajaran: <b>${esc(state.subject)}</b>` : ''}</p>
-      <p style="font-size:11px;color:#555;margin-top:4px;">Dicetak: ${tgl} | Jumlah Pertemuan: ${c.meetings}</p>
+    <div style="text-align:center;margin-bottom:${orient === 'portrait' ? '10px' : '15px'};border-bottom:3px double #333;padding-bottom:8px;">
+      <h2 style="font-size:${orient === 'portrait' ? '14px' : '18px'};margin:0;">REKAP ABSENSI SISWA</h2>
+      <h3 style="font-size:${orient === 'portrait' ? '13px' : '16px'};margin:3px 0;">${esc(state.schoolName)}</h3>
+      ${state.schoolAddress ? `<p style="font-size:10px;color:#555;margin:2px 0;">${esc(state.schoolAddress)}</p>` : ''}
+      <p style="font-size:11px;margin:3px 0;"><b>Tahun Ajaran: ${esc(state.academicYear)}</b></p>
+      <p style="font-size:11px;margin:2px 0;">Kelas: <b>${esc(c.name)}</b> &nbsp;|&nbsp; Mata Pelajaran: <b>${esc(c.subject)}</b></p>
+      <p style="font-size:10px;color:#555;margin-top:3px;">Dicetak: ${tgl} | Pertemuan: ${c.meetings}</p>
     </div>`;
+
   if (c.students.length === 0) return html + '<p style="text-align:center;color:#888;">Belum ada data siswa.</p></div>';
-  html += `<h4 style="font-size:13px;margin:10px 0 5px;">A. TABEL ABSENSI (Pertemuan 1 s/d ${c.meetings})</h4>
-    <table style="width:100%;border-collapse:collapse;font-size:10px;"><thead><tr style="background:#2a5298;color:#fff;">
-    <th style="border:1px solid #333;padding:4px;">No</th>
-    <th style="border:1px solid #333;padding:4px;">NIS</th>
-    <th style="border:1px solid #333;padding:4px;">Nama</th>`;
-  for (let m=1; m<=c.meetings; m++) html += `<th style="border:1px solid #333;padding:4px;">P${m}</th>`;
-  html += `<th style="border:1px solid #333;padding:4px;background:#065f46;">H</th>
-           <th style="border:1px solid #333;padding:4px;background:#991b1b;">S</th>
-           <th style="border:1px solid #333;padding:4px;background:#92400e;">I</th>
-           <th style="border:1px solid #333;padding:4px;background:#374151;">A</th></tr></thead><tbody>`;
+
+  html += `<h4 style="font-size:12px;margin:8px 0 4px;">A. TABEL ABSENSI (Pertemuan 1 s/d ${c.meetings})</h4>
+    <table style="font-size:${orient === 'portrait' ? '8px' : '10px'};"><thead><tr style="background:#2a5298;color:#fff;">
+    <th>No</th><th>NIS</th><th>Nama</th>`;
+  for (let m=1; m<=c.meetings; m++) html += `<th>P${m}</th>`;
+  html += `<th style="background:#065f46;">H</th><th style="background:#991b1b;">S</th>
+           <th style="background:#92400e;">I</th><th style="background:#374151;">A</th></tr></thead><tbody>`;
   c.students.forEach((st, idx) => {
     let h=0,s=0,i=0,a=0;
-    html += `<tr><td style="border:1px solid #333;padding:3px;text-align:center;">${idx+1}</td>
-      <td style="border:1px solid #333;padding:3px;">${esc(st.nis||'-')}</td>
-      <td style="border:1px solid #333;padding:3px;">${esc(st.name)}</td>`;
+    html += `<tr><td style="text-align:center;">${idx+1}</td>
+      <td>${esc(st.nis||'-')}</td><td>${esc(st.name)}</td>`;
     for (let m=1; m<=c.meetings; m++) {
       const v = (c.attendance[st.id] && c.attendance[st.id][m]) || 'H';
       if (v==='H') h++; else if (v==='S') s++; else if (v==='I') i++; else a++;
       const bg = v==='H' ? '#d1fae5' : v==='S' ? '#fee2e2' : v==='I' ? '#fef3c7' : '#e5e7eb';
-      html += `<td style="border:1px solid #333;padding:3px;text-align:center;background:${bg};">${v}</td>`;
+      html += `<td style="text-align:center;background:${bg};">${v}</td>`;
     }
-    html += `<td style="border:1px solid #333;padding:3px;text-align:center;font-weight:bold;">${h}</td>
-      <td style="border:1px solid #333;padding:3px;text-align:center;font-weight:bold;">${s}</td>
-      <td style="border:1px solid #333;padding:3px;text-align:center;font-weight:bold;">${i}</td>
-      <td style="border:1px solid #333;padding:3px;text-align:center;font-weight:bold;">${a}</td></tr>`;
+    html += `<td style="text-align:center;font-weight:bold;">${h}</td>
+      <td style="text-align:center;font-weight:bold;">${s}</td>
+      <td style="text-align:center;font-weight:bold;">${i}</td>
+      <td style="text-align:center;font-weight:bold;">${a}</td></tr>`;
   });
-  html += `</tbody></table><p style="font-size:10px;color:#555;margin-top:5px;">H=Hadir, S=Sakit, I=Izin, A=Alfa</p>`;
-  html += `<h4 style="font-size:13px;margin:15px 0 5px;page-break-before:always;">B. REKAP MATERI & JADWAL</h4>
-    <table style="width:100%;border-collapse:collapse;font-size:11px;"><thead><tr style="background:#2a5298;color:#fff;">
-    <th style="border:1px solid #333;padding:5px;">Pertemuan</th>
-    <th style="border:1px solid #333;padding:5px;">Hari / Tanggal</th>
-    <th style="border:1px solid #333;padding:5px;">Jam Ke-</th>
-    <th style="border:1px solid #333;padding:5px;">Waktu</th>
-    <th style="border:1px solid #333;padding:5px;">Materi</th></tr></thead><tbody>`;
+  html += `</tbody></table><p style="font-size:9px;color:#555;margin-top:4px;">H=Hadir, S=Sakit, I=Izin, A=Alfa</p>`;
+
+  html += `<h4 style="font-size:12px;margin:${orient === 'portrait' ? '10px' : '15px'} 0 4px;page-break-before:always;">B. REKAP MATERI & JADWAL</h4>
+    <table style="font-size:${orient === 'portrait' ? '9px' : '11px'};"><thead><tr style="background:#2a5298;color:#fff;">
+    <th>Pertemuan</th><th>Hari / Tanggal</th><th>Jam Ke-</th><th>Waktu</th><th>Materi</th></tr></thead><tbody>`;
   for (let m=1; m<=c.meetings; m++) {
     const d = c.meetingsData[m] || {};
     let hariTgl = '-';
@@ -1262,39 +1217,38 @@ function buildRekapHTML(c) {
     const schedForM = getScheduleForDate(d.date);
     const sc = schedForM.find(x => x.hour === d.hour);
     const waktu = sc ? `${sc.start} - ${sc.end}` : '-';
-    html += `<tr><td style="border:1px solid #333;padding:5px;text-align:center;">${m}</td>
-      <td style="border:1px solid #333;padding:5px;">${hariTgl}</td>
-      <td style="border:1px solid #333;padding:5px;text-align:center;">${d.hour||'-'}</td>
-      <td style="border:1px solid #333;padding:5px;text-align:center;">${waktu}</td>
-      <td style="border:1px solid #333;padding:5px;">${esc(d.material||'-')}</td></tr>`;
+    html += `<tr><td style="text-align:center;">${m}</td>
+      <td>${hariTgl}</td>
+      <td style="text-align:center;">${d.hour||'-'}</td>
+      <td style="text-align:center;">${waktu}</td>
+      <td>${esc(d.material||'-')}</td></tr>`;
   }
   html += `</tbody></table>
-    <div style="margin-top:30px;text-align:right;">
+    <div style="margin-top:${orient === 'portrait' ? '20px' : '30px'};text-align:right;">
       <p>${tgl}</p>
-      <p style="font-weight:bold;">Guru Mata Pelajaran${state.subject ? ` ${esc(state.subject)}` : ''}</p>
+      <p style="font-weight:bold;">Guru Mata Pelajaran ${esc(c.subject)}</p>
       <br><br><br>
       <p style="font-weight:bold;border-top:1px solid #333;display:inline-block;padding-top:3px;">${esc(teacherName)}</p>
-      ${nipLine ? `<p style="font-size:11px;margin-top:2px;">${nipLine}</p>` : ''}
+      ${nipLine ? `<p style="font-size:10px;margin-top:2px;">${nipLine}</p>` : ''}
     </div></div>`;
   return html;
 }
+
 function openPrintWindow(title, content) {
   const w = window.open('', '_blank');
   if (!w) { toast('Izinkan popup untuk mencetak!', 'error'); return; }
-  w.document.write(`<!DOCTYPE html><html><head><title>${esc(title)}</title><style>
-    @page { size: landscape; margin: 15mm; }
-    body { font-family: Arial, sans-serif; padding: 10px; }
-    .print-page { page-break-after: always; }
-    .print-page:last-child { page-break-after: auto; }
-  </style></head><body>${content}</body></html>`);
+  const css = getPrintCSS();
+  w.document.write(`<!DOCTYPE html><html><head><title>${esc(title)}</title><style>${css}</style></head><body>${content}</body></html>`);
   w.document.close();
   setTimeout(() => { w.focus(); w.print(); }, 400);
 }
+
 function printRekap(idx) {
   const c = state.classes[idx];
   if (!c.students.length && c.meetings === 0) { toast('Belum ada data untuk dicetak', 'error'); return; }
   openPrintWindow(`Rekap ${c.name} - ${state.schoolName}`, buildRekapHTML(c));
 }
+
 function printAllRekap() {
   const list = state.classes.filter(c => c.students.length > 0);
   if (!list.length) { toast('Belum ada kelas berisi siswa', 'error'); return; }
@@ -1351,6 +1305,7 @@ function handleFile(e) {
   reader.readAsArrayBuffer(file);
   e.target.value = '';
 }
+
 function exportExcel() {
   const wb = XLSX.utils.book_new();
   const infoRows = [
@@ -1358,8 +1313,9 @@ function exportExcel() {
     { 'Item': 'Alamat', 'Value': state.schoolAddress || '-' },
     { 'Item': 'Tahun Ajaran', 'Value': state.academicYear },
     { 'Item': 'Nama Guru', 'Value': state.teacherName || '-' },
-    { 'Item': 'Mata Pelajaran', 'Value': state.subject || '-' },
     { 'Item': 'NIP', 'Value': state.nip || '-' },
+    { 'Item': 'Daftar Mata Pelajaran', 'Value': state.subjects.join(', ') },
+    { 'Item': 'Pengaturan Cetak', 'Value': `${state.printSettings.paperSize} - ${state.printSettings.orientation}` },
     { 'Item': 'Tanggal Export', 'Value': new Date().toLocaleString('id-ID') },
     { 'Item': 'Jumlah Kelas Aktif', 'Value': state.classes.filter(c => c.students.length > 0).length },
     { 'Item': 'Total Siswa', 'Value': state.classes.reduce((a,c) => a + c.students.length, 0) }
@@ -1394,9 +1350,8 @@ function exportExcel() {
           if (!isNaN(dt.getTime())) hariTgl = DAY_NAMES[dt.getDay()] + ' ' + dt.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
         }
         materi.push({
-          'Pertemuan':m, 'Hari / Tanggal':hariTgl,
-          'Jam Ke-':d.hour||'-',
-          'Waktu': sc ? `${sc.start} - ${sc.end}` : '-',
+          'Pertemuan':m, 'Hari / Tanggal':hariTgl, 'Mata Pelajaran': c.subject,
+          'Jam Ke-':d.hour||'-', 'Waktu': sc ? `${sc.start} - ${sc.end}` : '-',
           'Materi':d.material||'-'
         });
       }
@@ -1407,6 +1362,7 @@ function exportExcel() {
   XLSX.writeFile(wb, `Absensi_${state.schoolName.replace(/\s+/g,'_')}_TA${state.academicYear.replace(/\//g,'-')}_${new Date().toISOString().slice(0,10)}.xlsx`);
   toast('✅ Excel diunduh');
 }
+
 function downloadTemplate() {
   const rows = [];
   for (let i=1; i<=30; i++) rows.push({ 'Kelas':state.classes[currentClass].name, 'NIS':'2024'+String(i).padStart(3,'0'), 'Nama':'Siswa '+i });
@@ -1429,7 +1385,7 @@ function showConfirm(title, msg, onOk, keepIdentity=false) {
   document.getElementById('modalMsg').textContent = msg;
   const note = document.getElementById('modalNote');
   note.style.display = keepIdentity ? 'block' : 'none';
-  note.textContent = keepIdentity ? '✅ Identitas sekolah, guru, jadwal, dan nama kelas TIDAK dihapus.' : '';
+  note.textContent = keepIdentity ? '✅ Identitas, mapel, jadwal, dan pengaturan cetak TIDAK dihapus.' : '';
   document.getElementById('modal').classList.add('show');
   document.getElementById('modalOk').onclick = () => { closeModal(); onOk(); };
 }
@@ -1443,5 +1399,5 @@ document.addEventListener('keydown', e => {
 startClock();
 render();
 </script>
-
-</body></html>
+</body>
+</html>
